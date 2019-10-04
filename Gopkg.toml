@@ -25,12 +25,8 @@
 #   unused-packages = true
 
 [[constraint]]
+  branch = "master"
   name = "github.com/ghodss/yaml"
-  version = "=1.0.0"
-  
-[[constraint]]
-  name = "gopkg.in/yaml.v2"
-  version = "=2.2.2"
 
 [[constraint]]
   branch = "master"
