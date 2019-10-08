@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/giantswarm/app.svg?style=svg)](https://circleci.com/gh/giantswarm/app)
+[![CircleCI](https://circleci.com/gh/giantswarm/app.svg?style=shield)](https://circleci.com/gh/giantswarm/app)
 
 # app
 
