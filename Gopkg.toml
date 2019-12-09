@@ -25,20 +25,20 @@
 #   unused-packages = true
 
 [[constraint]]
-  branch = "master"
   name = "github.com/ghodss/yaml"
+  branch = "master"
 
 [[constraint]]
-  branch = "master"
   name = "github.com/giantswarm/apiextensions"
+  branch = "master"
 
 [[constraint]]
-  branch = "master"
   name = "github.com/giantswarm/microerror"
+  branch = "master"
 
 [[constraint]]
   name = "k8s.io/apimachinery"
-  version = "kubernetes-1.15.4"
+  version = "kubernetes-1.16.3"
 
 [prune]
   go-tests = true
