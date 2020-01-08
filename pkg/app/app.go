@@ -20,6 +20,9 @@ func NewCR(name, appName, appVersion, appCatalog string) *applicationv1alpha1.Ap
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      name,
 			Namespace: "giantswarm",
+			Annotations: map[string]string{
+				"chart-operator.giantswarm.io/force-helm-upgrade": "true",
+			},
 			Labels: map[string]string{
 				"app-operator.giantswarm.io/version": "1.0.0",
 			},
