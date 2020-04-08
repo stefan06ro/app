@@ -14,7 +14,7 @@ import (
 // NewCR returns new application CR.
 //
 // AppCatalog is the name of the app catalog where the app stored.
-func NewCR(name, appName, appVersion, appCatalog string) *applicationv1alpha1.App {
+func NewCR(name, appName, appNamespace, appVersion, appCatalog string) *applicationv1alpha1.App {
 	appCR := &applicationv1alpha1.App{
 		TypeMeta: applicationv1alpha1.NewAppTypeMeta(),
 		ObjectMeta: metav1.ObjectMeta{
@@ -33,7 +33,7 @@ func NewCR(name, appName, appVersion, appCatalog string) *applicationv1alpha1.Ap
 				InCluster: true,
 			},
 			Name:      appName,
-			Namespace: "giantswarm",
+			Namespace: appNamespace,
 			Version:   appVersion,
 		},
 	}
