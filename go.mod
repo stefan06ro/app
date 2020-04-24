@@ -1,4 +1,4 @@
-module gitlab.com/giantswarm/app
+module github.com/giantswarm/app
 
 go 1.13
 
