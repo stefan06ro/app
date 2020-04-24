@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/ghodss/yaml"
 	applicationv1alpha1 "github.com/giantswarm/apiextensions/pkg/apis/application/v1alpha1"
 	"github.com/giantswarm/microerror"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"sigs.k8s.io/yaml"
 )
 
 type Config struct {
