@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+## [0.2.1] - 2020-04-24
+
 - Fix module path (was accidentaly declared as gitlab.com/...).
 
 ## [0.2.0] - 2020-04-24
@@ -23,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - First release
 
-[Unreleased]: https://github.com/giantswarm/app/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/giantswarm/app/compare/v0.2.1...HEAD
+[0.2.1]: https://github.com/giantswarm/app/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/giantswarm/app/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/giantswarm/app/releases/tag/v0.1.0
