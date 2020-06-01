@@ -40,7 +40,9 @@ func NewCR(c Config) *applicationv1alpha1.App {
 			Namespace:   "giantswarm",
 			Annotations: annotations,
 			Labels: map[string]string{
-				"app-operator.giantswarm.io/version": "1.0.0",
+				// Version is set to 0.0.0 for all control plane app CRs so
+				// they are reconciled by app-operator-unique.
+				"app-operator.giantswarm.io/version": "0.0.0",
 			},
 		},
 		Spec: applicationv1alpha1.AppSpec{
