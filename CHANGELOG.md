@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.3] - 2020-06-23
+
 ### Changed
 
 - Update apiextensions to avoid displaying empty strings in app CRs.
@@ -34,7 +36,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - First release
 
-[Unreleased]: https://github.com/giantswarm/app/compare/v0.2.2...HEAD
+[Unreleased]: https://github.com/giantswarm/app/compare/v0.2.3...HEAD
+[0.2.3]: https://github.com/giantswarm/app/compare/v0.2.2...v0.2.3
 [0.2.2]: https://github.com/giantswarm/app/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/giantswarm/app/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/giantswarm/app/compare/v0.1.0...v0.2.0
