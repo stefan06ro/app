@@ -303,7 +303,7 @@ func Test_IsAppCordoned(t *testing.T) {
 	}
 }
 
-func Test_KubecConfigFinalizer(t *testing.T) {
+func Test_KubeConfigFinalizer(t *testing.T) {
 	obj := v1alpha1.App{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: "my-test-app",
@@ -315,7 +315,7 @@ func Test_KubecConfigFinalizer(t *testing.T) {
 	}
 }
 
-func Test_KubecConfigSecretName(t *testing.T) {
+func Test_KubeConfigSecretName(t *testing.T) {
 	testCases := []struct {
 		name          string
 		obj           v1alpha1.App
@@ -347,16 +347,16 @@ func Test_KubecConfigSecretName(t *testing.T) {
 		t.Run(strconv.Itoa(i), func(t *testing.T) {
 			t.Log(tc.name)
 
-			name := KubecConfigSecretName(tc.obj)
+			name := KubeConfigSecretName(tc.obj)
 
 			if name != tc.expectedValue {
-				t.Fatalf("KubecConfigSecretName %#q, want %#q", name, tc.expectedValue)
+				t.Fatalf("KubeConfigSecretName %#q, want %#q", name, tc.expectedValue)
 			}
 		})
 	}
 }
 
-func Test_KubecConfigSecretNamespace(t *testing.T) {
+func Test_KubeConfigSecretNamespace(t *testing.T) {
 	testCases := []struct {
 		name          string
 		obj           v1alpha1.App
@@ -388,10 +388,10 @@ func Test_KubecConfigSecretNamespace(t *testing.T) {
 		t.Run(strconv.Itoa(i), func(t *testing.T) {
 			t.Log(tc.name)
 
-			name := KubecConfigSecretNamespace(tc.obj)
+			name := KubeConfigSecretNamespace(tc.obj)
 
 			if name != tc.expectedValue {
-				t.Fatalf("KubecConfigSecretNamespace %#q, want %#q", name, tc.expectedValue)
+				t.Fatalf("KubeConfigSecretNamespace %#q, want %#q", name, tc.expectedValue)
 			}
 		})
 	}

@@ -90,11 +90,11 @@ func KubeConfigFinalizer(customResource v1alpha1.App) string {
 	return fmt.Sprintf("app-operator.giantswarm.io/app-%s", customResource.GetName())
 }
 
-func KubecConfigSecretName(customResource v1alpha1.App) string {
+func KubeConfigSecretName(customResource v1alpha1.App) string {
 	return customResource.Spec.KubeConfig.Secret.Name
 }
 
-func KubecConfigSecretNamespace(customResource v1alpha1.App) string {
+func KubeConfigSecretNamespace(customResource v1alpha1.App) string {
 	return customResource.Spec.KubeConfig.Secret.Namespace
 }
 
