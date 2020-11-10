@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.1.1] - 2020-11-10
+
 ### Fixed
 
 - Move validation package to pkg.
@@ -65,7 +67,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - First release
 
-[Unreleased]: https://github.com/giantswarm/app/compare/v3.1.0...HEAD
+[Unreleased]: https://github.com/giantswarm/app/compare/v3.1.1...HEAD
+[3.1.1]: https://github.com/giantswarm/app/compare/v3.1.0...v3.1.1
 [3.1.0]: https://github.com/giantswarm/app/compare/v3.0.0...v3.1.0
 [3.0.0]: https://github.com/giantswarm/app/compare/v2.0.0...v3.0.0
 [2.0.0]: https://github.com/giantswarm/app/compare/v0.2.3...v2.0.0
