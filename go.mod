@@ -7,7 +7,7 @@ require (
 	github.com/giantswarm/helmclient/v3 v3.0.1
 	github.com/giantswarm/microerror v0.2.1
 	github.com/giantswarm/micrologger v0.3.4
-	github.com/google/go-cmp v0.5.2
+	github.com/google/go-cmp v0.5.3
 	github.com/mattn/go-colorable v0.1.2 // indirect
 	k8s.io/api v0.18.9
 	k8s.io/apimachinery v0.18.9
