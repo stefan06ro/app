@@ -18,6 +18,8 @@ type Config struct {
 	AppVersion          string
 	DisableForceUpgrade bool
 	Name                string
+	UserConfigMapName   string
+	UserSecretName      string
 }
 
 // NewCR returns new application CR.
@@ -30,6 +32,21 @@ func NewCR(c Config) *applicationv1alpha1.App {
 			annotations = map[string]string{
 				"chart-operator.giantswarm.io/force-helm-upgrade": "true",
 			}
+		}
+	}
+
+	var userConfig applicationv1alpha1.AppSpecUserConfig
+	if c.UserConfigMapName != "" {
+
+		userConfig.ConfigMap = applicationv1alpha1.AppSpecUserConfigConfigMap{
+			Name:      c.UserConfigMapName,
+			Namespace: "giantswarm",
+		}
+	}
+	if c.UserSecretName != "" {
+		userConfig.Secret = applicationv1alpha1.AppSpecUserConfigSecret{
+			Name:      c.UserSecretName,
+			Namespace: "giantswarm",
 		}
 	}
 
@@ -50,9 +67,10 @@ func NewCR(c Config) *applicationv1alpha1.App {
 			KubeConfig: applicationv1alpha1.AppSpecKubeConfig{
 				InCluster: true,
 			},
-			Name:      c.AppName,
-			Namespace: c.AppNamespace,
-			Version:   c.AppVersion,
+			Name:       c.AppName,
+			Namespace:  c.AppNamespace,
+			Version:    c.AppVersion,
+			UserConfig: userConfig,
 		},
 	}
 
