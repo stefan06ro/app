@@ -72,7 +72,9 @@ func (v *Validator) validateConfig(ctx context.Context, cr v1alpha1.App) error {
 
 		_, err := v.k8sClient.CoreV1().ConfigMaps(ns).Get(ctx, key.AppConfigMapName(cr), metav1.GetOptions{})
 		if apierrors.IsNotFound(err) {
-			return microerror.Maskf(validationError, resourceNotFoundTemplate, "configmap", key.AppConfigMapName(cr), ns)
+			// appConfigMapNotFoundError is used rather than a validation error because
+			// during cluster creation there is a short delay while it is generated.
+			return microerror.Maskf(appConfigMapNotFoundError, resourceNotFoundTemplate, "configmap", key.AppConfigMapName(cr), ns)
 		} else if err != nil {
 			return microerror.Mask(err)
 		}
@@ -112,7 +114,9 @@ func (v *Validator) validateKubeConfig(ctx context.Context, cr v1alpha1.App) err
 
 		_, err := v.k8sClient.CoreV1().Secrets(key.KubeConfigSecretNamespace(cr)).Get(ctx, key.KubeConfigSecretName(cr), metav1.GetOptions{})
 		if apierrors.IsNotFound(err) {
-			return microerror.Maskf(validationError, resourceNotFoundTemplate, "kubeconfig secret", key.KubeConfigSecretName(cr), ns)
+			// kubeConfigNotFoundError is used rather than a validation error because
+			// during cluster creation there is a short delay while it is generated.
+			return microerror.Maskf(kubeConfigNotFoundError, resourceNotFoundTemplate, "kubeconfig secret", key.KubeConfigSecretName(cr), ns)
 		} else if err != nil {
 			return microerror.Mask(err)
 		}

@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Return separate errors for cluster kubeconfig and configmap not existing
+since there can be a delay creating them on cluster creation.
+
 ## [3.4.0] - 2020-11-26
 
 ### Added
