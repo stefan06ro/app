@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.5.0] - 2020-11-27
+
 ### Added
 
 - Return separate errors for cluster kubeconfig and configmap not existing
@@ -90,7 +92,8 @@ since there can be a delay creating them on cluster creation.
 
 - First release
 
-[Unreleased]: https://github.com/giantswarm/app/compare/v3.4.0...HEAD
+[Unreleased]: https://github.com/giantswarm/app/compare/v3.5.0...HEAD
+[3.5.0]: https://github.com/giantswarm/app/compare/v3.4.0...v3.5.0
 [3.4.0]: https://github.com/giantswarm/app/compare/v3.3.0...v3.4.0
 [3.3.0]: https://github.com/giantswarm/app/compare/v3.2.0...v3.3.0
 [3.2.0]: https://github.com/giantswarm/app/compare/v3.1.1...v3.2.0
