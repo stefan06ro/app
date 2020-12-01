@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Support `ConfigMajorVersion` setting to set
+  "config.giantswarm.io/major-version" annotation.
+- Set "config-controller.giantswarm.io/version" label to "0.0.0" on created App
+  CRs.
+
 ## [3.5.0] - 2020-11-27
 
 ### Added
