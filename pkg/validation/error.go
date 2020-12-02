@@ -39,6 +39,15 @@ func IsAppConfigMapNotFound(err error) bool {
 	return false
 }
 
+var appDependencyNotReadyError = &microerror.Error{
+	Kind: "appDependencyNotReadyError",
+}
+
+// IsAppDependencyNotReady asserts appDependencyNotReadyError.
+func IsAppDependencyNotReady(err error) bool {
+	return microerror.Cause(err) == appDependencyNotReadyError
+}
+
 var invalidConfigError = &microerror.Error{
 	Kind: "invalidConfigError",
 }

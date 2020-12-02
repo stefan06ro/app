@@ -3,6 +3,7 @@ package validation
 import (
 	"context"
 
+	"github.com/giantswarm/apiextensions/v3/pkg/annotation"
 	"github.com/giantswarm/apiextensions/v3/pkg/apis/application/v1alpha1"
 	"github.com/giantswarm/apiextensions/v3/pkg/label"
 	"github.com/giantswarm/microerror"
@@ -64,6 +65,12 @@ func (v *Validator) validateCatalog(ctx context.Context, cr v1alpha1.App) error 
 }
 
 func (v *Validator) validateConfig(ctx context.Context, cr v1alpha1.App) error {
+	_, hasManagedConfig := cr.Annotations[annotation.ConfigVersion]
+	if hasManagedConfig && (key.AppConfigMapName(cr) == "" || key.AppSecretName(cr) == "") {
+		// wait for config-controller setting app CR configmap and secret
+		return microerror.Maskf(appDependencyNotReadyError, "ConfigMap or Secret not set")
+	}
+
 	if key.AppConfigMapName(cr) != "" {
 		ns := key.AppConfigMapNamespace(cr)
 		if ns == "" {
