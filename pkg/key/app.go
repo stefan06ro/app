@@ -8,7 +8,7 @@ import (
 	"github.com/giantswarm/apiextensions/v3/pkg/label"
 	"github.com/giantswarm/microerror"
 
-	"github.com/giantswarm/app/v3/pkg/annotation"
+	"github.com/giantswarm/app/v4/pkg/annotation"
 )
 
 const (

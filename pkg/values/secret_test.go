@@ -21,7 +21,7 @@ func Test_MergeSecretData(t *testing.T) {
 		app          v1alpha1.App
 		appCatalog   v1alpha1.AppCatalog
 		secrets      []*corev1.Secret
-		expectedData map[string][]byte
+		expectedData map[string]interface{}
 		errorMatcher func(error) bool
 	}{
 		{
@@ -79,8 +79,8 @@ func Test_MergeSecretData(t *testing.T) {
 					},
 				},
 			},
-			expectedData: map[string][]byte{
-				"values": []byte("cluster: yaml\n"),
+			expectedData: map[string]interface{}{
+				"cluster": "yaml",
 			},
 		},
 		{
@@ -121,8 +121,8 @@ func Test_MergeSecretData(t *testing.T) {
 					},
 				},
 			},
-			expectedData: map[string][]byte{
-				"values": []byte("catalog: yaml\n"),
+			expectedData: map[string]interface{}{
+				"catalog": "yaml",
 			},
 		},
 		{
@@ -178,8 +178,9 @@ func Test_MergeSecretData(t *testing.T) {
 					},
 				},
 			},
-			expectedData: map[string][]byte{
-				"values": []byte("catalog: yaml\ncluster: yaml\n"),
+			expectedData: map[string]interface{}{
+				"catalog": "yaml",
+				"cluster": "yaml",
 			},
 		},
 		{
@@ -235,9 +236,11 @@ func Test_MergeSecretData(t *testing.T) {
 					},
 				},
 			},
-			expectedData: map[string][]byte{
+			expectedData: map[string]interface{}{
 				// "test: app" overrides "test: catalog".
-				"values": []byte("catalog: yaml\ncluster: yaml\ntest: app\n"),
+				"catalog": "yaml",
+				"cluster": "yaml",
+				"test":    "app",
 			},
 		},
 		{
@@ -308,9 +311,12 @@ func Test_MergeSecretData(t *testing.T) {
 					},
 				},
 			},
-			expectedData: map[string][]byte{
+			expectedData: map[string]interface{}{
 				// "test: user" overrides "test: catalog" and "test: app".
-				"values": []byte("catalog: test\ncluster: test\ntest: user\nuser: test\n"),
+				"catalog": "test",
+				"cluster": "test",
+				"test":    "user",
+				"user":    "test",
 			},
 		},
 		{
@@ -388,10 +394,7 @@ func Test_MergeSecretData(t *testing.T) {
 
 			if tc.expectedData != nil {
 				if !reflect.DeepEqual(result, tc.expectedData) {
-					data := toStringMap(result)
-					expectedData := toStringMap(tc.expectedData)
-
-					t.Fatalf("want matching data \n %s", cmp.Diff(data, expectedData))
+					t.Fatalf("want matching data \n %s", cmp.Diff(result, tc.expectedData))
 				}
 			}
 		})

@@ -5,7 +5,7 @@ import (
 
 	"github.com/giantswarm/apiextensions/v3/pkg/apis/application/v1alpha1"
 
-	"github.com/giantswarm/app/v3/pkg/annotation"
+	"github.com/giantswarm/app/v4/pkg/annotation"
 )
 
 func ChartConfigMapName(customResource v1alpha1.App) string {

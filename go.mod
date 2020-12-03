@@ -1,14 +1,13 @@
-module github.com/giantswarm/app/v3
+module github.com/giantswarm/app/v4
 
 go 1.15
 
 require (
 	github.com/giantswarm/apiextensions/v3 v3.11.0
-	github.com/giantswarm/helmclient/v3 v3.0.1
 	github.com/giantswarm/microerror v0.2.1
 	github.com/giantswarm/micrologger v0.3.4
 	github.com/google/go-cmp v0.5.4
-	github.com/mattn/go-colorable v0.1.2 // indirect
+	github.com/imdario/mergo v0.3.11
 	k8s.io/api v0.18.9
 	k8s.io/apimachinery v0.18.9
 	k8s.io/client-go v0.18.9

@@ -5,17 +5,22 @@ import (
 	"fmt"
 
 	"github.com/giantswarm/apiextensions/v3/pkg/apis/application/v1alpha1"
-	"github.com/giantswarm/helmclient/v3/pkg/helmclient"
 	"github.com/giantswarm/microerror"
+	"github.com/imdario/mergo"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	"github.com/giantswarm/app/v3/pkg/key"
+	"github.com/giantswarm/app/v4/pkg/key"
+)
+
+const (
+	configmap = "configmap"
+	secret    = "secret"
 )
 
 // MergeConfigMapData merges the data from the catalog, app and user configmaps
 // and returns a single set of values.
-func (v *Values) MergeConfigMapData(ctx context.Context, app v1alpha1.App, appCatalog v1alpha1.AppCatalog) (map[string]string, error) {
+func (v *Values) MergeConfigMapData(ctx context.Context, app v1alpha1.App, appCatalog v1alpha1.AppCatalog) (map[string]interface{}, error) {
 	appConfigMapName := key.AppConfigMapName(app)
 	catalogConfigMapName := key.AppCatalogConfigMapName(appCatalog)
 	userConfigMapName := key.UserConfigMapName(app)
@@ -26,48 +31,51 @@ func (v *Values) MergeConfigMapData(ctx context.Context, app v1alpha1.App, appCa
 	}
 
 	// We get the catalog level values if configured.
-	catalogData, err := v.getConfigMapForCatalog(ctx, appCatalog)
+	rawCatalogData, err := v.getConfigMapForCatalog(ctx, appCatalog)
+	if err != nil {
+		return nil, microerror.Mask(err)
+	}
+
+	catalogData, err := extractData(configmap, "catalog", rawCatalogData)
 	if err != nil {
 		return nil, microerror.Mask(err)
 	}
 
 	// We get the app level values if configured.
-	appData, err := v.getConfigMapForApp(ctx, app)
+	rawAppData, err := v.getConfigMapForApp(ctx, app)
 	if err != nil {
 		return nil, microerror.Mask(err)
 	}
 
-	// Config is merged and in case of intersecting values the app level
-	// config is preferred.
-	mergedData, err := mergeConfigMapData(catalogData, appData)
-	if helmclient.IsParsingDestFailedError(err) {
-		return nil, microerror.Maskf(parsingError, "failed to parse catalog configmap, logs from merging: %s", err.Error())
-	} else if helmclient.IsParsingSrcFailedError(err) {
-		return nil, microerror.Maskf(parsingError, "failed to parse app configmap, logs from merging: %s", err.Error())
-	} else if err != nil {
+	appData, err := extractData(configmap, "app", rawAppData)
+	if err != nil {
+		return nil, microerror.Mask(err)
+	}
+
+	err = mergo.Merge(&catalogData, appData, mergo.WithOverride)
+	if err != nil {
 		return nil, microerror.Mask(err)
 	}
 
 	// We get the user level values if configured and merge them.
 	if key.UserConfigMapName(app) != "" {
-		userData, err := v.getUserConfigMapForApp(ctx, app)
+		rawUserData, err := v.getUserConfigMapForApp(ctx, app)
 		if err != nil {
 			return nil, microerror.Mask(err)
 		}
 
-		// Config is merged again and in case of intersecting values the user
-		// level config is preferred.
-		mergedData, err = mergeConfigMapData(mergedData, userData)
-		if helmclient.IsParsingDestFailedError(err) {
-			return nil, microerror.Maskf(parsingError, "failed to parse previous merged configmap, logs from merging: %s", err.Error())
-		} else if helmclient.IsParsingSrcFailedError(err) {
-			return nil, microerror.Maskf(parsingError, "failed to parse user configmap, logs from merging: %s", err.Error())
-		} else if err != nil {
+		userData, err := extractData(configmap, "user", rawUserData)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+
+		err = mergo.Merge(&catalogData, userData, mergo.WithOverride)
+		if err != nil {
 			return nil, microerror.Mask(err)
 		}
 	}
 
-	return mergedData, nil
+	return catalogData, nil
 }
 
 func (v *Values) getConfigMap(ctx context.Context, configMapName, configMapNamespace string) (map[string]string, error) {
@@ -115,15 +123,4 @@ func (v *Values) getUserConfigMapForApp(ctx context.Context, app v1alpha1.App) (
 	}
 
 	return configMap, nil
-}
-
-// mergeConfigMapData merges configmap data into a single block of YAML that
-// is stored in the configmap associated with the relevant chart CR.
-func mergeConfigMapData(destMap, srcMap map[string]string) (map[string]string, error) {
-	result, err := mergeData(toByteSliceMap(destMap), toByteSliceMap(srcMap))
-	if err != nil {
-		return nil, microerror.Mask(err)
-	}
-
-	return toStringMap(result), nil
 }

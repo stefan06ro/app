@@ -21,7 +21,7 @@ func Test_MergeConfigMapData(t *testing.T) {
 		app          v1alpha1.App
 		appCatalog   v1alpha1.AppCatalog
 		configMaps   []*corev1.ConfigMap
-		expectedData map[string]string
+		expectedData map[string]interface{}
 		errorMatcher func(error) bool
 	}{
 		{
@@ -79,8 +79,8 @@ func Test_MergeConfigMapData(t *testing.T) {
 					},
 				},
 			},
-			expectedData: map[string]string{
-				"values": "cluster: yaml\n",
+			expectedData: map[string]interface{}{
+				"cluster": "yaml",
 			},
 		},
 		{
@@ -121,8 +121,8 @@ func Test_MergeConfigMapData(t *testing.T) {
 					},
 				},
 			},
-			expectedData: map[string]string{
-				"values": "catalog: yaml\n",
+			expectedData: map[string]interface{}{
+				"catalog": "yaml",
 			},
 		},
 		{
@@ -178,8 +178,9 @@ func Test_MergeConfigMapData(t *testing.T) {
 					},
 				},
 			},
-			expectedData: map[string]string{
-				"values": "catalog: yaml\ncluster: yaml\n",
+			expectedData: map[string]interface{}{
+				"catalog": "yaml",
+				"cluster": "yaml",
 			},
 		},
 		{
@@ -235,8 +236,8 @@ func Test_MergeConfigMapData(t *testing.T) {
 					},
 				},
 			},
-			expectedData: map[string]string{
-				"values": "test: app\n",
+			expectedData: map[string]interface{}{
+				"test": "app",
 			},
 		},
 		{
@@ -307,8 +308,11 @@ func Test_MergeConfigMapData(t *testing.T) {
 					},
 				},
 			},
-			expectedData: map[string]string{
-				"values": "catalog: test\ncluster: test\ntest: user\nuser: test\n",
+			expectedData: map[string]interface{}{
+				"catalog": "test",
+				"cluster": "test",
+				"test":    "user",
+				"user":    "test",
 			},
 		},
 		{
