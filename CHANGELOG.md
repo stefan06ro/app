@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add `PauseReconciliation` option, responsible for setting `app-operator.giantswarm.io/paused` flag.
+
+### Removed
+
+- Do not validate App CR configmap and secret names if managed by config-controller.
+
 ## [4.0.0] - 2020-12-03
 
 ### Changed

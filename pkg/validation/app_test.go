@@ -5,7 +5,6 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/giantswarm/apiextensions/v3/pkg/annotation"
 	"github.com/giantswarm/apiextensions/v3/pkg/apis/application/v1alpha1"
 	"github.com/giantswarm/apiextensions/v3/pkg/clientset/versioned/fake"
 	"github.com/giantswarm/apiextensions/v3/pkg/label"
@@ -456,45 +455,6 @@ func Test_ValidateApp(t *testing.T) {
 				newTestCatalog("control-plane-catalog"),
 			},
 			expectedErr: "validation error: namespace is not specified for secret `dex-app-user-secrets`",
-		},
-		{
-			name: "case 14: managed configuration is not ready",
-			obj: v1alpha1.App{
-				ObjectMeta: metav1.ObjectMeta{
-					Name:      "kiam",
-					Namespace: "eggs2",
-					Labels: map[string]string{
-						label.AppOperatorVersion: "2.6.0",
-					},
-					Annotations: map[string]string{
-						annotation.ConfigVersion: "1.0.0",
-					},
-				},
-				Spec: v1alpha1.AppSpec{
-					Catalog:   "giantswarm",
-					Name:      "kiam",
-					Namespace: "kube-system",
-					Config:    v1alpha1.AppSpecConfig{},
-					KubeConfig: v1alpha1.AppSpecKubeConfig{
-						Context: v1alpha1.AppSpecKubeConfigContext{
-							Name: "eggs2-kubeconfig",
-						},
-						InCluster: false,
-						Secret: v1alpha1.AppSpecKubeConfigSecret{
-							Name:      "eggs2-kubeconfig",
-							Namespace: "eggs2",
-						},
-					},
-					Version: "1.4.0",
-				},
-			},
-			catalogs: []*v1alpha1.AppCatalog{
-				newTestCatalog("giantswarm"),
-			},
-			secrets: []*corev1.Secret{
-				newTestSecret("eggs2-kubeconfig", "eggs2"),
-			},
-			expectedErr: "app dependency not ready error",
 		},
 	}
 
