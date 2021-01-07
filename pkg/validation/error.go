@@ -71,33 +71,6 @@ func IsKubeConfigNotFound(err error) bool {
 	return false
 }
 
-var notAllowedError = &microerror.Error{
-	Kind: "notAllowedError",
-}
-
-// IsNotAllowed asserts notAllowedError.
-func IsNotAllowed(err error) bool {
-	return microerror.Cause(err) == notAllowedError
-}
-
-var notFoundError = &microerror.Error{
-	Kind: "notFoundError",
-}
-
-// IsNotFound asserts notFoundError.
-func IsNotFound(err error) bool {
-	return microerror.Cause(err) == notFoundError
-}
-
-var parsingFailedError = &microerror.Error{
-	Kind: "parsingFailedError",
-}
-
-// IsParsingFailed asserts parsingFailedError.
-func IsParsingFailed(err error) bool {
-	return microerror.Cause(err) == parsingFailedError
-}
-
 var validationError = &microerror.Error{
 	Kind: "validationError",
 }
