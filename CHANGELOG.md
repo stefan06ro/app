@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.2.0] - 2021-01-12
+
 ### Removed
 
 - Remove unused errors from validation package.
@@ -134,7 +136,8 @@ since there can be a delay creating them on cluster creation.
 
 - First release
 
-[Unreleased]: https://github.com/giantswarm/app/compare/v4.1.0...HEAD
+[Unreleased]: https://github.com/giantswarm/app/compare/v4.2.0...HEAD
+[4.2.0]: https://github.com/giantswarm/app/compare/v4.1.0...v4.2.0
 [4.1.0]: https://github.com/giantswarm/app/compare/v4.0.0...v4.1.0
 [4.0.0]: https://github.com/giantswarm/app/compare/v3.7.0...v4.0.0
 [3.7.0]: https://github.com/giantswarm/app/compare/v3.5.0...v3.7.0
