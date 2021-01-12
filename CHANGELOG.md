@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 - Remove unused errors from validation package.
+- Do not set `config-controller.giantswarm.io/version` label to "0.0.0" on created App CRs.
+- Remove `PauseReconciliation` option, responsible for setting `app-operator.giantswarm.io/paused` flag.
 
 ## [4.1.0] - 2021-01-05
 

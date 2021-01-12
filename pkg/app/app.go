@@ -21,7 +21,6 @@ type Config struct {
 	ConfigVersion       string
 	DisableForceUpgrade bool
 	Name                string
-	PauseReconciliation bool
 	UserConfigMapName   string
 	UserSecretName      string
 }
@@ -37,9 +36,6 @@ func NewCR(c Config) *applicationv1alpha1.App {
 		}
 		if !c.DisableForceUpgrade {
 			annotations["chart-operator.giantswarm.io/force-helm-upgrade"] = "true"
-		}
-		if c.PauseReconciliation {
-			annotations[annotation.AppOperatorPaused] = "true"
 		}
 	}
 
@@ -66,8 +62,7 @@ func NewCR(c Config) *applicationv1alpha1.App {
 			Labels: map[string]string{
 				// Version 0.0.0 means this is reconciled by
 				// unique operator.
-				label.AppOperatorVersion:      "0.0.0",
-				label.ConfigControllerVersion: "0.0.0",
+				label.AppOperatorVersion: "0.0.0",
 			},
 		},
 		Spec: applicationv1alpha1.AppSpec{
