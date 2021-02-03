@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/giantswarm/apiextensions/v3/pkg/apis/application/v1alpha1"
+	"github.com/giantswarm/microerror"
 
 	"github.com/giantswarm/app/v4/pkg/annotation"
 )
@@ -29,4 +30,17 @@ func IsChartCordoned(customResource v1alpha1.Chart) bool {
 	}
 
 	return false
+}
+
+func ToChart(v interface{}) (v1alpha1.Chart, error) {
+	if v == nil {
+		return v1alpha1.Chart{}, microerror.Maskf(emptyValueError, "empty value cannot be converted to customResource")
+	}
+
+	customResource, ok := v.(*v1alpha1.Chart)
+	if !ok {
+		return v1alpha1.Chart{}, microerror.Maskf(wrongTypeError, "expected '%T', got '%T'", &v1alpha1.Chart{}, v)
+	}
+
+	return *customResource, nil
 }
