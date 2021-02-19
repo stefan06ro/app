@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add `key.AppCatalogEntryName` and `key.AppCatalogEntryTeam` functions.
+- Add `application.giantswarm.io/team` annotation.
+
 ## [4.3.0] - 2021-02-03
 
 ### Added

@@ -25,6 +25,9 @@ const (
 	// app CRs depends on.
 	LatestSecretVersion = "latest-secret-version"
 
+	// Team annotation is defined in Chart.yaml and added to AppCatalogEntry CRs.
+	Team = "application.giantswarm.io/team"
+
 	// WebhookURL is the URL that chart-operator reports chart updates.
 	WebhookURL = "webhook-url"
 )
