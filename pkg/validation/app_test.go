@@ -502,6 +502,208 @@ func Test_ValidateApp(t *testing.T) {
 	}
 }
 
+func Test_ValidateMetadataConstraints(t *testing.T) {
+	ctx := context.Background()
+
+	tests := []struct {
+		name         string
+		obj          v1alpha1.App
+		catalogEntry *v1alpha1.AppCatalogEntry
+		apps         []*v1alpha1.App
+		expectedErr  string
+	}{
+		{
+			name: "case 0: flawless flow",
+			obj: v1alpha1.App{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "kiam",
+					Namespace: "eggs2",
+					Labels: map[string]string{
+						label.AppOperatorVersion: "2.6.0",
+					},
+				},
+				Spec: v1alpha1.AppSpec{
+					Catalog:   "giantswarm",
+					Name:      "kiam",
+					Namespace: metav1.NamespaceDefault,
+					Version:   "1.4.0",
+				},
+			},
+			catalogEntry: &v1alpha1.AppCatalogEntry{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "giantswarm-kiam-1.4.0",
+					Namespace: metav1.NamespaceDefault,
+				},
+				Spec: v1alpha1.AppCatalogEntrySpec{
+					Restrictions: &v1alpha1.AppCatalogEntrySpecRestrictions{
+						FixedNamespace: metav1.NamespaceDefault,
+					},
+				},
+			},
+		},
+		{
+			name: "case 1: fixed namespace constraint",
+			obj: v1alpha1.App{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "kiam",
+					Namespace: "eggs2",
+				},
+				Spec: v1alpha1.AppSpec{
+					Catalog:   "giantswarm",
+					Name:      "kiam",
+					Namespace: "kube-system",
+					Version:   "1.4.0",
+				},
+			},
+			catalogEntry: &v1alpha1.AppCatalogEntry{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "giantswarm-kiam-1.4.0",
+					Namespace: metav1.NamespaceDefault,
+				},
+				Spec: v1alpha1.AppCatalogEntrySpec{
+					Restrictions: &v1alpha1.AppCatalogEntrySpecRestrictions{
+						FixedNamespace: "eggs1",
+					},
+				},
+			},
+			expectedErr: "validation error: app `kiam` can only be installed in namespace `eggs1` only, not `kube-system`",
+		},
+		{
+			name: "case 2: cluster singleton constraint",
+			obj: v1alpha1.App{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "kiam",
+					Namespace: "eggs2",
+				},
+				Spec: v1alpha1.AppSpec{
+					Catalog:   "giantswarm",
+					Name:      "kiam",
+					Namespace: "kube-system",
+					Version:   "1.4.0",
+				},
+			},
+			apps: []*v1alpha1.App{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "another-kiam",
+						Namespace: "eggs2",
+					},
+					Spec: v1alpha1.AppSpec{
+						Catalog:   "giantswarm",
+						Name:      "kiam",
+						Namespace: "giantswarm",
+						Version:   "1.3.0-rc1",
+					},
+				},
+			},
+			catalogEntry: &v1alpha1.AppCatalogEntry{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "giantswarm-kiam-1.4.0",
+					Namespace: metav1.NamespaceDefault,
+				},
+				Spec: v1alpha1.AppCatalogEntrySpec{
+					Restrictions: &v1alpha1.AppCatalogEntrySpecRestrictions{
+						ClusterSingleton: true,
+					},
+				},
+			},
+			expectedErr: "validation error: app `kiam` can only be installed once in cluster `eggs2`",
+		},
+		{
+			name: "case 3: namespace singleton constraint",
+			obj: v1alpha1.App{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "kiam",
+					Namespace: "eggs2",
+				},
+				Spec: v1alpha1.AppSpec{
+					Catalog:   "giantswarm",
+					Name:      "kiam",
+					Namespace: "kube-system",
+					Version:   "1.4.0",
+				},
+			},
+			apps: []*v1alpha1.App{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "another-kiam",
+						Namespace: "eggs2",
+					},
+					Spec: v1alpha1.AppSpec{
+						Catalog:   "giantswarm",
+						Name:      "kiam",
+						Namespace: "giantswarm",
+						Version:   "1.3.0-rc1",
+					},
+				},
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "another-kiam-1",
+						Namespace: "eggs2",
+					},
+					Spec: v1alpha1.AppSpec{
+						Catalog:   "giantswarm",
+						Name:      "kiam",
+						Namespace: "kube-system",
+						Version:   "1.3.0-rc1",
+					},
+				},
+			},
+			catalogEntry: &v1alpha1.AppCatalogEntry{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "giantswarm-kiam-1.4.0",
+					Namespace: metav1.NamespaceDefault,
+				},
+				Spec: v1alpha1.AppCatalogEntrySpec{
+					Restrictions: &v1alpha1.AppCatalogEntrySpecRestrictions{
+						NamespaceSingleton: true,
+					},
+				},
+			},
+			expectedErr: "validation error: app `kiam` can only be installed only once in namespace `kube-system`",
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			g8sObjs := make([]runtime.Object, 0)
+
+			if tc.catalogEntry != nil {
+				g8sObjs = append(g8sObjs, tc.catalogEntry)
+			}
+
+			for _, app := range tc.apps {
+				g8sObjs = append(g8sObjs, app)
+			}
+
+			c := Config{
+				G8sClient: fake.NewSimpleClientset(g8sObjs...),
+				K8sClient: clientgofake.NewSimpleClientset(),
+				Logger:    microloggertest.New(),
+			}
+			r, err := NewValidator(c)
+			if err != nil {
+				t.Fatalf("error == %#v, want nil", err)
+			}
+
+			err = r.validateMetadataConstraints(ctx, tc.obj)
+			switch {
+			case err != nil && tc.expectedErr == "":
+				t.Fatalf("error == %#v, want nil", err)
+			case err == nil && tc.expectedErr != "":
+				t.Fatalf("error == nil, want non-nil")
+			}
+
+			if err != nil && tc.expectedErr != "" {
+				if !strings.Contains(err.Error(), tc.expectedErr) {
+					t.Fatalf("error == %#v, want %#v ", err.Error(), tc.expectedErr)
+				}
+
+			}
+		})
+	}
+}
+
 func newTestCatalog(name string) *v1alpha1.AppCatalog {
 	return &v1alpha1.AppCatalog{
 		ObjectMeta: metav1.ObjectMeta{

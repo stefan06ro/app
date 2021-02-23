@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add `namespace` metadata validation.
+
 ## [4.4.0] - 2021-02-19
 
 ### Added
