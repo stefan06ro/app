@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Add `namespace` metadata validation.
+- Add `application.giantswarm.io/owners` annotation.
 
 ## [4.4.0] - 2021-02-19
 

@@ -25,7 +25,12 @@ const (
 	// app CRs depends on.
 	LatestSecretVersion = "latest-secret-version"
 
+	// Owners annotation is defined in Chart.yaml and added to AppCatalogEntry CRs.
+	// It is used when an app is owned by multiple teams.
+	Owners = "application.giantswarm.io/owners"
+
 	// Team annotation is defined in Chart.yaml and added to AppCatalogEntry CRs.
+	// It is used when an app is owned by a single team.
 	Team = "application.giantswarm.io/team"
 
 	// WebhookURL is the URL that chart-operator reports chart updates.
