@@ -478,6 +478,8 @@ func Test_ValidateApp(t *testing.T) {
 				G8sClient: fake.NewSimpleClientset(g8sObjs...),
 				K8sClient: clientgofake.NewSimpleClientset(k8sObjs...),
 				Logger:    microloggertest.New(),
+
+				Provider: "aws",
 			}
 			r, err := NewValidator(c)
 			if err != nil {
@@ -662,6 +664,33 @@ func Test_ValidateMetadataConstraints(t *testing.T) {
 			},
 			expectedErr: "validation error: app `kiam` can only be installed only once in namespace `kube-system`",
 		},
+		{
+			name: "case 4: compatible providers constraint",
+			obj: v1alpha1.App{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "kiam",
+					Namespace: "eggs2",
+				},
+				Spec: v1alpha1.AppSpec{
+					Catalog:   "giantswarm",
+					Name:      "kiam",
+					Namespace: "kube-system",
+					Version:   "1.4.0",
+				},
+			},
+			catalogEntry: &v1alpha1.AppCatalogEntry{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "giantswarm-kiam-1.4.0",
+					Namespace: metav1.NamespaceDefault,
+				},
+				Spec: v1alpha1.AppCatalogEntrySpec{
+					Restrictions: &v1alpha1.AppCatalogEntrySpecRestrictions{
+						CompatibleProviders: []v1alpha1.Provider{"azure"},
+					},
+				},
+			},
+			expectedErr: "validation error: app `kiam` can only be installed for providers [`azure`] not `aws`",
+		},
 	}
 
 	for _, tc := range tests {
@@ -680,6 +709,8 @@ func Test_ValidateMetadataConstraints(t *testing.T) {
 				G8sClient: fake.NewSimpleClientset(g8sObjs...),
 				K8sClient: clientgofake.NewSimpleClientset(),
 				Logger:    microloggertest.New(),
+
+				Provider: "aws",
 			}
 			r, err := NewValidator(c)
 			if err != nil {

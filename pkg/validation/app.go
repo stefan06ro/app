@@ -147,6 +147,13 @@ func (v *Validator) validateMetadataConstraints(ctx context.Context, cr v1alpha1
 		return nil
 	}
 
+	if len(entry.Spec.Restrictions.CompatibleProviders) > 0 {
+		if !contains(entry.Spec.Restrictions.CompatibleProviders, v1alpha1.Provider(v.provider)) {
+			return microerror.Maskf(validationError, "app %#q can only be installed for providers %#q not %#q",
+				cr.Spec.Name, entry.Spec.Restrictions.CompatibleProviders, v.provider)
+		}
+	}
+
 	if entry.Spec.Restrictions.FixedNamespace != "" {
 		if entry.Spec.Restrictions.FixedNamespace != cr.Spec.Namespace {
 			return microerror.Maskf(validationError, "app %#q can only be installed in namespace %#q only, not %#q",
@@ -215,4 +222,13 @@ func (v *Validator) validateUserConfig(ctx context.Context, cr v1alpha1.App) err
 	}
 
 	return nil
+}
+
+func contains(s []v1alpha1.Provider, e v1alpha1.Provider) bool {
+	for _, a := range s {
+		if a == e {
+			return true
+		}
+	}
+	return false
 }
