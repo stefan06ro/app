@@ -55,6 +55,10 @@ func AppStatus(customResource v1alpha1.App) v1alpha1.AppStatus {
 	return customResource.Status
 }
 
+func AppTeam(customResource v1alpha1.App) string {
+	return customResource.Annotations[annotation.Team]
+}
+
 func CatalogName(customResource v1alpha1.App) string {
 	return customResource.Spec.Catalog
 }
