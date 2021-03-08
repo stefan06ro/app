@@ -6,7 +6,7 @@ require (
 	github.com/giantswarm/apiextensions/v3 v3.19.0
 	github.com/giantswarm/microerror v0.3.0
 	github.com/giantswarm/micrologger v0.5.0
-	github.com/google/go-cmp v0.5.4
+	github.com/google/go-cmp v0.5.5
 	github.com/imdario/mergo v0.3.11
 	k8s.io/api v0.18.9
 	k8s.io/apimachinery v0.18.9
