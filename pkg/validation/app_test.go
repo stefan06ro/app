@@ -735,6 +735,174 @@ func Test_ValidateMetadataConstraints(t *testing.T) {
 	}
 }
 
+func Test_ValidateNamespace(t *testing.T) {
+	ctx := context.Background()
+
+	tests := []struct {
+		name        string
+		obj         v1alpha1.App
+		apps        []*v1alpha1.App
+		expectedErr string
+	}{
+		{
+			name: "case 0: flawless",
+			obj: v1alpha1.App{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "kiam",
+					Namespace: "eggs2",
+				},
+				Spec: v1alpha1.AppSpec{
+					Catalog:   "giantswarm",
+					Name:      "kiam",
+					Namespace: "kube-system",
+					NamespaceConfig: v1alpha1.AppSpecNamespaceConfig{
+						Annotations: map[string]string{
+							"linkerd.io/inject": "enabled",
+						},
+					},
+					Version: "1.4.0",
+				},
+			},
+			apps: []*v1alpha1.App{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "another-kiam-1",
+						Namespace: "eggs2",
+					},
+					Spec: v1alpha1.AppSpec{
+						Catalog:   "giantswarm",
+						Name:      "kiam",
+						Namespace: "kube-system",
+						NamespaceConfig: v1alpha1.AppSpecNamespaceConfig{
+							Annotations: map[string]string{
+								"linkerd.io/inject": "enabled",
+							},
+						},
+						Version: "1.3.0-rc1",
+					},
+				},
+			},
+		},
+		{
+			name: "case 1: namespace annotation collision",
+			obj: v1alpha1.App{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "kiam",
+					Namespace: "eggs2",
+				},
+				Spec: v1alpha1.AppSpec{
+					Catalog:   "giantswarm",
+					Name:      "kiam",
+					Namespace: "kube-system",
+					NamespaceConfig: v1alpha1.AppSpecNamespaceConfig{
+						Annotations: map[string]string{
+							"linkerd.io/inject": "enabled",
+						},
+					},
+					Version: "1.4.0",
+				},
+			},
+			apps: []*v1alpha1.App{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "another-kiam-1",
+						Namespace: "eggs2",
+					},
+					Spec: v1alpha1.AppSpec{
+						Catalog:   "giantswarm",
+						Name:      "kiam",
+						Namespace: "kube-system",
+						NamespaceConfig: v1alpha1.AppSpecNamespaceConfig{
+							Annotations: map[string]string{
+								"linkerd.io/inject": "disabled",
+							},
+						},
+						Version: "1.3.0-rc1",
+					},
+				},
+			},
+			expectedErr: "app `kiam` annotation `linkerd.io/inject` for target namespace `kube-system` collides with value `disabled` for app `another-kiam-1`",
+		},
+		{
+			name: "case 2: namespace label collision",
+			obj: v1alpha1.App{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "kiam",
+					Namespace: "eggs2",
+				},
+				Spec: v1alpha1.AppSpec{
+					Catalog:   "giantswarm",
+					Name:      "kiam",
+					Namespace: "kube-system",
+					NamespaceConfig: v1alpha1.AppSpecNamespaceConfig{
+						Labels: map[string]string{
+							"monitoring": "enabled",
+						},
+					},
+					Version: "1.4.0",
+				},
+			},
+			apps: []*v1alpha1.App{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "another-kiam-1",
+						Namespace: "eggs2",
+					},
+					Spec: v1alpha1.AppSpec{
+						Catalog:   "giantswarm",
+						Name:      "kiam",
+						Namespace: "kube-system",
+						NamespaceConfig: v1alpha1.AppSpecNamespaceConfig{
+							Labels: map[string]string{
+								"monitoring": "disabled",
+							},
+						},
+						Version: "1.3.0-rc1",
+					},
+				},
+			},
+			expectedErr: "app `kiam` label `monitoring` for target namespace `kube-system` collides with value `disabled` for app `another-kiam-1`",
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			g8sObjs := make([]runtime.Object, 0)
+
+			for _, app := range tc.apps {
+				g8sObjs = append(g8sObjs, app)
+			}
+
+			c := Config{
+				G8sClient: fake.NewSimpleClientset(g8sObjs...),
+				K8sClient: clientgofake.NewSimpleClientset(),
+				Logger:    microloggertest.New(),
+
+				Provider: "aws",
+			}
+			r, err := NewValidator(c)
+			if err != nil {
+				t.Fatalf("error == %#v, want nil", err)
+			}
+
+			err = r.validateNamespaceConfig(ctx, tc.obj)
+			switch {
+			case err != nil && tc.expectedErr == "":
+				t.Fatalf("error == %#v, want nil", err)
+			case err == nil && tc.expectedErr != "":
+				t.Fatalf("error == nil, want non-nil")
+			}
+
+			if err != nil && tc.expectedErr != "" {
+				if !strings.Contains(err.Error(), tc.expectedErr) {
+					t.Fatalf("error == %#v, want %#v ", err.Error(), tc.expectedErr)
+				}
+
+			}
+		})
+	}
+}
+
 func newTestCatalog(name string) *v1alpha1.AppCatalog {
 	return &v1alpha1.AppCatalog{
 		ObjectMeta: metav1.ObjectMeta{
