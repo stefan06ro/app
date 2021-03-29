@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add validation for user configmap and secret names for apps in the default catalog.
+
 ## [4.8.0] - 2021-03-18
 
 ### Added

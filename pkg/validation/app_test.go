@@ -456,6 +456,68 @@ func Test_ValidateApp(t *testing.T) {
 			},
 			expectedErr: "validation error: namespace is not specified for secret `dex-app-user-secrets`",
 		},
+		{
+			name: "case 14: spec.userConfig.configMap.name incorrect for default catalog app",
+			obj: v1alpha1.App{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "kiam",
+					Namespace: "giantswarm",
+					Labels: map[string]string{
+						label.AppOperatorVersion: "0.0.0",
+					},
+				},
+				Spec: v1alpha1.AppSpec{
+					Catalog:   "default",
+					Name:      "kiam-app",
+					Namespace: "giantswarm",
+					KubeConfig: v1alpha1.AppSpecKubeConfig{
+						InCluster: true,
+					},
+					UserConfig: v1alpha1.AppSpecUserConfig{
+						ConfigMap: v1alpha1.AppSpecUserConfigConfigMap{
+							Name:      "user-values",
+							Namespace: "",
+						},
+					},
+					Version: "1.2.2",
+				},
+			},
+			catalogs: []*v1alpha1.AppCatalog{
+				newTestCatalog("default"),
+			},
+			expectedErr: "validation error: user configmap must be named `kiam-user-values` for app in default catalog",
+		},
+		{
+			name: "case 15: spec.userConfig.secret.name incorrect for default catalog app",
+			obj: v1alpha1.App{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "kiam",
+					Namespace: "giantswarm",
+					Labels: map[string]string{
+						label.AppOperatorVersion: "0.0.0",
+					},
+				},
+				Spec: v1alpha1.AppSpec{
+					Catalog:   "default",
+					Name:      "kiam-app",
+					Namespace: "giantswarm",
+					KubeConfig: v1alpha1.AppSpecKubeConfig{
+						InCluster: true,
+					},
+					UserConfig: v1alpha1.AppSpecUserConfig{
+						Secret: v1alpha1.AppSpecUserConfigSecret{
+							Name:      "user-secrets",
+							Namespace: "",
+						},
+					},
+					Version: "1.2.2",
+				},
+			},
+			catalogs: []*v1alpha1.AppCatalog{
+				newTestCatalog("default"),
+			},
+			expectedErr: "validation error: user secret must be named `kiam-user-secrets` for app in default catalog",
+		},
 	}
 
 	for _, tc := range tests {

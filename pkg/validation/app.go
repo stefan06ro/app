@@ -18,6 +18,8 @@ const (
 	labelNotFoundTemplate           = "label %#q not found"
 	namespaceNotFoundReasonTemplate = "namespace is not specified for %s %#q"
 	resourceNotFoundTemplate        = "%s %#q in namespace %#q not found"
+
+	defaultCatalogName = "default"
 )
 
 func (v *Validator) ValidateApp(ctx context.Context, app v1alpha1.App) (bool, error) {
@@ -252,6 +254,13 @@ func (v *Validator) validateMetadataConstraints(ctx context.Context, cr v1alpha1
 
 func (v *Validator) validateUserConfig(ctx context.Context, cr v1alpha1.App) error {
 	if key.UserConfigMapName(cr) != "" {
+		if key.CatalogName(cr) == defaultCatalogName {
+			configMapName := fmt.Sprintf("%s-user-values", cr.Name)
+			if key.UserConfigMapName(cr) != configMapName {
+				return microerror.Maskf(validationError, "user configmap must be named %#q for app in default catalog", configMapName)
+			}
+		}
+
 		ns := key.UserConfigMapNamespace(cr)
 		if ns == "" {
 			return microerror.Maskf(validationError, namespaceNotFoundReasonTemplate, "configmap", key.UserConfigMapName(cr))
@@ -266,6 +275,13 @@ func (v *Validator) validateUserConfig(ctx context.Context, cr v1alpha1.App) err
 	}
 
 	if key.UserSecretName(cr) != "" {
+		if key.CatalogName(cr) == defaultCatalogName {
+			secretName := fmt.Sprintf("%s-user-secrets", cr.Name)
+			if key.UserSecretName(cr) != secretName {
+				return microerror.Maskf(validationError, "user secret must be named %#q for app in default catalog", secretName)
+			}
+		}
+
 		ns := key.UserSecretNamespace(cr)
 		if ns == "" {
 			return microerror.Maskf(validationError, namespaceNotFoundReasonTemplate, "secret", key.UserSecretName(cr))
