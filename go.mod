@@ -21,6 +21,8 @@ replace (
 	github.com/bketelsen/crypt => github.com/bketelsen/crypt v0.0.3
 	// Use moby v20.10.0-beta1 to fix build issue on darwin.
 	github.com/docker/docker => github.com/moby/moby v20.10.0-beta1+incompatible
+	// Use v1.3.2 of gogo/protobuf to fix nancy alert.
+	github.com/gogo/protobuf v1.3.1 => github.com/gogo/protobuf v1.3.2
 	// Apply security fix not present in v1.4.0.
 	github.com/gorilla/websocket => github.com/gorilla/websocket v1.4.2
 	// Use v1.0.0-rc7 of runc to fix nancy alert.

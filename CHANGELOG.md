@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.9.0] - 2021-03-29
+
 ### Added
 
 - Add validation for user configmap and secret names for apps in the default catalog.
@@ -178,7 +180,8 @@ since there can be a delay creating them on cluster creation.
 
 - First release
 
-[Unreleased]: https://github.com/giantswarm/app/compare/v4.8.0...HEAD
+[Unreleased]: https://github.com/giantswarm/app/compare/v4.9.0...HEAD
+[4.9.0]: https://github.com/giantswarm/app/compare/v4.8.0...v4.9.0
 [4.8.0]: https://github.com/giantswarm/app/compare/v4.7.0...v4.8.0
 [4.7.0]: https://github.com/giantswarm/app/compare/v4.6.0...v4.7.0
 [4.6.0]: https://github.com/giantswarm/app/compare/v4.5.0...v4.6.0
