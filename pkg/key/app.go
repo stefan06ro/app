@@ -96,7 +96,7 @@ func CordonUntilDate() string {
 }
 
 func DefaultCatalogStorageURL() string {
-	return "https://giantswarm.github.com/default-catalog"
+	return "https://giantswarm.github.io/default-catalog"
 }
 
 func InCluster(customResource v1alpha1.App) bool {
