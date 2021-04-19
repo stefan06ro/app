@@ -16,10 +16,15 @@ import (
 const (
 	catalogNotFoundTemplate         = "catalog %#q not found"
 	labelNotFoundTemplate           = "label %#q not found"
+	nameTooLongTemplate             = "name %#q is %d chars and exceeds max length of %d chars"
 	namespaceNotFoundReasonTemplate = "namespace is not specified for %s %#q"
 	resourceNotFoundTemplate        = "%s %#q in namespace %#q not found"
 
 	defaultCatalogName = "default"
+
+	// nameMaxLength is 53 characters as this is the maximum allowed for Helm
+	// release names.
+	nameMaxLength = 53
 )
 
 func (v *Validator) ValidateApp(ctx context.Context, app v1alpha1.App) (bool, error) {
@@ -46,6 +51,11 @@ func (v *Validator) ValidateApp(ctx context.Context, app v1alpha1.App) (bool, er
 	}
 
 	err = v.validateMetadataConstraints(ctx, app)
+	if err != nil {
+		return false, microerror.Mask(err)
+	}
+
+	err = v.validateName(ctx, app)
 	if err != nil {
 		return false, microerror.Mask(err)
 	}
@@ -105,6 +115,14 @@ func (v *Validator) validateConfig(ctx context.Context, cr v1alpha1.App) error {
 		} else if err != nil {
 			return microerror.Mask(err)
 		}
+	}
+
+	return nil
+}
+
+func (v *Validator) validateName(ctx context.Context, cr v1alpha1.App) error {
+	if len(cr.Name) > nameMaxLength {
+		return microerror.Maskf(validationError, nameTooLongTemplate, cr.Name, len(cr.Name), nameMaxLength)
 	}
 
 	return nil

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add validation for length of `metadata.name`.
+
 ## [4.9.0] - 2021-03-29
 
 ### Added

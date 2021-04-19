@@ -518,6 +518,31 @@ func Test_ValidateApp(t *testing.T) {
 			},
 			expectedErr: "validation error: user secret must be named `kiam-user-secrets` for app in default catalog",
 		},
+		{
+			name: "case 16: metadata.name exceeds max length",
+			obj: v1alpha1.App{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "cluster-autoscaler-1.2.2-2b060b8bda545a7b6aeff1b8cb13951181ae30d3",
+					Namespace: "giantswarm",
+					Labels: map[string]string{
+						label.AppOperatorVersion: "0.0.0",
+					},
+				},
+				Spec: v1alpha1.AppSpec{
+					Catalog:   "default",
+					Name:      "cluster-autoscaler",
+					Namespace: "giantswarm",
+					KubeConfig: v1alpha1.AppSpecKubeConfig{
+						InCluster: true,
+					},
+					Version: "1.2.2",
+				},
+			},
+			catalogs: []*v1alpha1.AppCatalog{
+				newTestCatalog("default"),
+			},
+			expectedErr: "validation error: name `cluster-autoscaler-1.2.2-2b060b8bda545a7b6aeff1b8cb13951181ae30d3` is 65 chars and exceeds max length of 53 chars",
+		},
 	}
 
 	for _, tc := range tests {
