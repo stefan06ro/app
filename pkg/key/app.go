@@ -103,6 +103,10 @@ func InCluster(customResource v1alpha1.App) bool {
 	return customResource.Spec.KubeConfig.InCluster
 }
 
+func InstallSkipCRDs(customResource v1alpha1.App) bool {
+	return customResource.Spec.Install.SkipCRDs
+}
+
 func IsAppCordoned(customResource v1alpha1.App) bool {
 	_, reasonOk := customResource.Annotations[fmt.Sprintf("%s/%s", annotation.AppOperatorPrefix, annotation.CordonReason)]
 	_, untilOk := customResource.Annotations[fmt.Sprintf("%s/%s", annotation.AppOperatorPrefix, annotation.CordonUntil)]

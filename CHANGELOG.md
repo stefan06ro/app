@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add `InstallSkipCRDs` key function for app CRs.
+
 ## [4.10.0] - 2021-04-19
 
 ### Added
