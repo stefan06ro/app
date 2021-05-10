@@ -11,7 +11,7 @@ require (
 	github.com/imdario/mergo v0.3.12
 	k8s.io/api v0.18.18
 	k8s.io/apimachinery v0.18.18
-	k8s.io/client-go v0.18.9
+	k8s.io/client-go v0.18.18
 	sigs.k8s.io/yaml v1.2.0
 )
 
