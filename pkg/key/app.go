@@ -5,10 +5,9 @@ import (
 	"time"
 
 	"github.com/giantswarm/apiextensions/v3/pkg/apis/application/v1alpha1"
+	"github.com/giantswarm/k8smetadata/pkg/annotation"
 	"github.com/giantswarm/k8smetadata/pkg/label"
 	"github.com/giantswarm/microerror"
-
-	"github.com/giantswarm/app/v4/pkg/annotation"
 )
 
 const (
@@ -68,7 +67,7 @@ func AppStatus(customResource v1alpha1.App) v1alpha1.AppStatus {
 }
 
 func AppTeam(customResource v1alpha1.App) string {
-	return customResource.Annotations[annotation.Team]
+	return customResource.Annotations[annotation.AppTeam]
 }
 
 func CatalogName(customResource v1alpha1.App) string {
@@ -84,11 +83,11 @@ func ClusterValuesConfigMapName(customResource v1alpha1.App) string {
 }
 
 func CordonReason(customResource v1alpha1.App) string {
-	return customResource.GetAnnotations()[fmt.Sprintf("%s/%s", annotation.ChartOperatorPrefix, annotation.CordonReason)]
+	return customResource.GetAnnotations()[annotation.ChartOperatorCordonReason]
 }
 
 func CordonUntil(customResource v1alpha1.App) string {
-	return customResource.GetAnnotations()[fmt.Sprintf("%s/%s", annotation.ChartOperatorPrefix, annotation.CordonUntil)]
+	return customResource.GetAnnotations()[annotation.ChartOperatorCordonUntil]
 }
 
 func CordonUntilDate() string {
@@ -108,8 +107,8 @@ func InstallSkipCRDs(customResource v1alpha1.App) bool {
 }
 
 func IsAppCordoned(customResource v1alpha1.App) bool {
-	_, reasonOk := customResource.Annotations[fmt.Sprintf("%s/%s", annotation.AppOperatorPrefix, annotation.CordonReason)]
-	_, untilOk := customResource.Annotations[fmt.Sprintf("%s/%s", annotation.AppOperatorPrefix, annotation.CordonUntil)]
+	_, reasonOk := customResource.Annotations[annotation.AppOperatorCordonReason]
+	_, untilOk := customResource.Annotations[annotation.AppOperatorCordonUntil]
 
 	if reasonOk && untilOk {
 		return true

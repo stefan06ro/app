@@ -4,9 +4,8 @@ import (
 	"fmt"
 
 	"github.com/giantswarm/apiextensions/v3/pkg/apis/application/v1alpha1"
+	"github.com/giantswarm/k8smetadata/pkg/annotation"
 	"github.com/giantswarm/microerror"
-
-	"github.com/giantswarm/app/v4/pkg/annotation"
 )
 
 func ChartConfigMapName(customResource v1alpha1.App) string {
@@ -22,8 +21,8 @@ func ChartStatus(customResource v1alpha1.Chart) v1alpha1.ChartStatus {
 }
 
 func IsChartCordoned(customResource v1alpha1.Chart) bool {
-	_, reasonOk := customResource.Annotations[fmt.Sprintf("%s/%s", annotation.ChartOperatorPrefix, annotation.CordonReason)]
-	_, untilOk := customResource.Annotations[fmt.Sprintf("%s/%s", annotation.ChartOperatorPrefix, annotation.CordonUntil)]
+	_, reasonOk := customResource.Annotations[annotation.ChartOperatorCordonReason]
+	_, untilOk := customResource.Annotations[annotation.ChartOperatorCordonUntil]
 
 	if reasonOk && untilOk {
 		return true

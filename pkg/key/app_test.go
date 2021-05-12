@@ -1,15 +1,13 @@
 package key
 
 import (
-	"fmt"
 	"reflect"
 	"strconv"
 	"testing"
 
 	"github.com/giantswarm/apiextensions/v3/pkg/apis/application/v1alpha1"
+	"github.com/giantswarm/k8smetadata/pkg/annotation"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-
-	"github.com/giantswarm/app/v4/pkg/annotation"
 )
 
 func Test_AppConfigMapName(t *testing.T) {
@@ -230,7 +228,7 @@ func Test_CordonReason(t *testing.T) {
 	obj := v1alpha1.App{
 		ObjectMeta: metav1.ObjectMeta{
 			Annotations: map[string]string{
-				fmt.Sprintf("%s/%s", annotation.ChartOperatorPrefix, annotation.CordonReason): "manual upgrade",
+				annotation.ChartOperatorCordonReason: "manual upgrade",
 			},
 		},
 	}
@@ -246,7 +244,7 @@ func Test_CordonUntil(t *testing.T) {
 	obj := v1alpha1.App{
 		ObjectMeta: metav1.ObjectMeta{
 			Annotations: map[string]string{
-				fmt.Sprintf("%s/%s", annotation.ChartOperatorPrefix, annotation.CordonUntil): "2019-12-31T23:59:59Z",
+				annotation.ChartOperatorCordonUntil: "2019-12-31T23:59:59Z",
 			},
 		},
 	}
@@ -281,8 +279,8 @@ func Test_IsAppCordoned(t *testing.T) {
 			chart: v1alpha1.App{
 				ObjectMeta: metav1.ObjectMeta{
 					Annotations: map[string]string{
-						fmt.Sprintf("%s/%s", annotation.AppOperatorPrefix, annotation.CordonReason): "testing manual upgrade",
-						fmt.Sprintf("%s/%s", annotation.AppOperatorPrefix, annotation.CordonUntil):  "2019-12-31T23:59:59Z",
+						annotation.AppOperatorCordonReason: "testing manual upgrade",
+						annotation.AppOperatorCordonUntil:  "2019-12-31T23:59:59Z",
 					},
 				},
 			},
