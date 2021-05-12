@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.13.0] - 2021-05-12
+
 ## [4.12.0] - 2021-05-06
 
 ### Changed
@@ -198,7 +200,8 @@ since there can be a delay creating them on cluster creation.
 
 - First release
 
-[Unreleased]: https://github.com/giantswarm/app/compare/v4.12.0...HEAD
+[Unreleased]: https://github.com/giantswarm/app/compare/v4.13.0...HEAD
+[4.13.0]: https://github.com/giantswarm/app/compare/v4.12.0...v4.13.0
 [4.12.0]: https://github.com/giantswarm/app/compare/v4.11.0...v4.12.0
 [4.11.0]: https://github.com/giantswarm/app/compare/v4.10.0...v4.11.0
 [4.10.0]: https://github.com/giantswarm/app/compare/v4.9.0...v4.10.0
