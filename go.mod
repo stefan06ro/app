@@ -3,7 +3,7 @@ module github.com/giantswarm/app/v4
 go 1.15
 
 require (
-	github.com/giantswarm/apiextensions/v3 v3.22.0
+	github.com/giantswarm/apiextensions/v3 v3.26.0
 	github.com/giantswarm/k8smetadata v0.3.0
 	github.com/giantswarm/microerror v0.3.0
 	github.com/giantswarm/micrologger v0.5.0
