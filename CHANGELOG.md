@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add key functions for `Catalog` CRs.
+
 ## [4.13.0] - 2021-05-12
 
 ## [4.12.0] - 2021-05-06
