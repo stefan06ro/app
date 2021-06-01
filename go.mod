@@ -7,7 +7,7 @@ require (
 	github.com/giantswarm/k8smetadata v0.3.0
 	github.com/giantswarm/microerror v0.3.0
 	github.com/giantswarm/micrologger v0.5.0
-	github.com/google/go-cmp v0.5.5
+	github.com/google/go-cmp v0.5.6
 	github.com/imdario/mergo v0.3.12
 	k8s.io/api v0.18.19
 	k8s.io/apimachinery v0.18.19
