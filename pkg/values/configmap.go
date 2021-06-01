@@ -10,7 +10,7 @@ import (
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	"github.com/giantswarm/app/v4/pkg/key"
+	"github.com/giantswarm/app/v5/pkg/key"
 )
 
 const (
@@ -20,9 +20,9 @@ const (
 
 // MergeConfigMapData merges the data from the catalog, app and user configmaps
 // and returns a single set of values.
-func (v *Values) MergeConfigMapData(ctx context.Context, app v1alpha1.App, appCatalog v1alpha1.AppCatalog) (map[string]interface{}, error) {
+func (v *Values) MergeConfigMapData(ctx context.Context, app v1alpha1.App, catalog v1alpha1.Catalog) (map[string]interface{}, error) {
 	appConfigMapName := key.AppConfigMapName(app)
-	catalogConfigMapName := key.AppCatalogConfigMapName(appCatalog)
+	catalogConfigMapName := key.CatalogConfigMapName(catalog)
 	userConfigMapName := key.UserConfigMapName(app)
 
 	if appConfigMapName == "" && catalogConfigMapName == "" && userConfigMapName == "" {
@@ -31,7 +31,7 @@ func (v *Values) MergeConfigMapData(ctx context.Context, app v1alpha1.App, appCa
 	}
 
 	// We get the catalog level values if configured.
-	rawCatalogData, err := v.getConfigMapForCatalog(ctx, appCatalog)
+	rawCatalogData, err := v.getConfigMapForCatalog(ctx, catalog)
 	if err != nil {
 		return nil, microerror.Mask(err)
 	}
@@ -107,8 +107,8 @@ func (v *Values) getConfigMapForApp(ctx context.Context, app v1alpha1.App) (map[
 	return configMap, nil
 }
 
-func (v *Values) getConfigMapForCatalog(ctx context.Context, catalog v1alpha1.AppCatalog) (map[string]string, error) {
-	configMap, err := v.getConfigMap(ctx, key.AppCatalogConfigMapName(catalog), key.AppCatalogConfigMapNamespace(catalog))
+func (v *Values) getConfigMapForCatalog(ctx context.Context, catalog v1alpha1.Catalog) (map[string]string, error) {
+	configMap, err := v.getConfigMap(ctx, key.CatalogConfigMapName(catalog), key.CatalogConfigMapNamespace(catalog))
 	if err != nil {
 		return nil, microerror.Mask(err)
 	}

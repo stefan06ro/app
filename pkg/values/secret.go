@@ -10,14 +10,14 @@ import (
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	"github.com/giantswarm/app/v4/pkg/key"
+	"github.com/giantswarm/app/v5/pkg/key"
 )
 
 // MergeSecretData merges the data from the catalog, app and user secretss
 // and returns a single set of values.
-func (v *Values) MergeSecretData(ctx context.Context, app v1alpha1.App, appCatalog v1alpha1.AppCatalog) (map[string]interface{}, error) {
+func (v *Values) MergeSecretData(ctx context.Context, app v1alpha1.App, catalog v1alpha1.Catalog) (map[string]interface{}, error) {
 	appSecretName := key.AppSecretName(app)
-	catalogSecretName := key.AppCatalogSecretName(appCatalog)
+	catalogSecretName := key.CatalogSecretName(catalog)
 	userSecretName := key.UserSecretName(app)
 
 	if appSecretName == "" && catalogSecretName == "" && userSecretName == "" {
@@ -26,7 +26,7 @@ func (v *Values) MergeSecretData(ctx context.Context, app v1alpha1.App, appCatal
 	}
 
 	// We get the catalog level secrets if configured.
-	rawCatalogData, err := v.getSecretDataForCatalog(ctx, appCatalog)
+	rawCatalogData, err := v.getSecretDataForCatalog(ctx, catalog)
 	if err != nil {
 		return nil, microerror.Mask(err)
 	}
@@ -106,8 +106,8 @@ func (v *Values) getSecretDataForApp(ctx context.Context, app v1alpha1.App) (map
 	return secret, nil
 }
 
-func (v *Values) getSecretDataForCatalog(ctx context.Context, catalog v1alpha1.AppCatalog) (map[string][]byte, error) {
-	secret, err := v.getSecret(ctx, key.AppCatalogSecretName(catalog), key.AppCatalogSecretNamespace(catalog))
+func (v *Values) getSecretDataForCatalog(ctx context.Context, catalog v1alpha1.Catalog) (map[string][]byte, error) {
+	secret, err := v.getSecret(ctx, key.CatalogSecretName(catalog), key.CatalogSecretNamespace(catalog))
 	if err != nil {
 		return nil, microerror.Mask(err)
 	}

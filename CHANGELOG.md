@@ -11,6 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Add key functions for `Catalog` CRs.
 
+### Changed
+
+- Breaking change to replace `AppCatalog ` CRD with namespace scoped `Catalog`
+CRD in `values` package.
+
 ## [4.13.0] - 2021-05-12
 
 ## [4.12.0] - 2021-05-06

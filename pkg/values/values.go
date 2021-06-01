@@ -45,13 +45,13 @@ func New(config Config) (*Values, error) {
 
 // MergeAll merges both configmap and secret values to produce a single set of
 // values that can be passed to Helm.
-func (v *Values) MergeAll(ctx context.Context, app v1alpha1.App, appCatalog v1alpha1.AppCatalog) (map[string]interface{}, error) {
-	configMapData, err := v.MergeConfigMapData(ctx, app, appCatalog)
+func (v *Values) MergeAll(ctx context.Context, app v1alpha1.App, catalog v1alpha1.Catalog) (map[string]interface{}, error) {
+	configMapData, err := v.MergeConfigMapData(ctx, app, catalog)
 	if err != nil {
 		return nil, microerror.Mask(err)
 	}
 
-	secretData, err := v.MergeSecretData(ctx, app, appCatalog)
+	secretData, err := v.MergeSecretData(ctx, app, catalog)
 	if err != nil {
 		return nil, microerror.Mask(err)
 	}

@@ -19,7 +19,7 @@ func Test_MergeSecretData(t *testing.T) {
 	tests := []struct {
 		name         string
 		app          v1alpha1.App
-		appCatalog   v1alpha1.AppCatalog
+		catalog      v1alpha1.Catalog
 		secrets      []*corev1.Secret
 		expectedData map[string]interface{}
 		errorMatcher func(error) bool
@@ -37,7 +37,7 @@ func Test_MergeSecretData(t *testing.T) {
 					Namespace: "kube-system",
 				},
 			},
-			appCatalog: v1alpha1.AppCatalog{
+			catalog: v1alpha1.Catalog{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "test-catalog",
 				},
@@ -63,7 +63,7 @@ func Test_MergeSecretData(t *testing.T) {
 					},
 				},
 			},
-			appCatalog: v1alpha1.AppCatalog{
+			catalog: v1alpha1.Catalog{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "test-catalog",
 				},
@@ -96,14 +96,14 @@ func Test_MergeSecretData(t *testing.T) {
 					Namespace: "giantswarm",
 				},
 			},
-			appCatalog: v1alpha1.AppCatalog{
+			catalog: v1alpha1.Catalog{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "test-catalog",
 				},
-				Spec: v1alpha1.AppCatalogSpec{
+				Spec: v1alpha1.CatalogSpec{
 					Title: "test-catalog",
-					Config: v1alpha1.AppCatalogSpecConfig{
-						Secret: v1alpha1.AppCatalogSpecConfigSecret{
+					Config: &v1alpha1.CatalogSpecConfig{
+						Secret: &v1alpha1.CatalogSpecConfigSecret{
 							Name:      "test-catalog-secrets",
 							Namespace: "giantswarm",
 						},
@@ -144,14 +144,14 @@ func Test_MergeSecretData(t *testing.T) {
 					Namespace: "giantswarm",
 				},
 			},
-			appCatalog: v1alpha1.AppCatalog{
+			catalog: v1alpha1.Catalog{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "test-catalog",
 				},
-				Spec: v1alpha1.AppCatalogSpec{
+				Spec: v1alpha1.CatalogSpec{
 					Title: "test-catalog",
-					Config: v1alpha1.AppCatalogSpecConfig{
-						Secret: v1alpha1.AppCatalogSpecConfigSecret{
+					Config: &v1alpha1.CatalogSpecConfig{
+						Secret: &v1alpha1.CatalogSpecConfigSecret{
 							Name:      "test-catalog-secrets",
 							Namespace: "giantswarm",
 						},
@@ -202,14 +202,14 @@ func Test_MergeSecretData(t *testing.T) {
 					Namespace: "giantswarm",
 				},
 			},
-			appCatalog: v1alpha1.AppCatalog{
+			catalog: v1alpha1.Catalog{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "test-catalog",
 				},
-				Spec: v1alpha1.AppCatalogSpec{
+				Spec: v1alpha1.CatalogSpec{
 					Title: "test-catalog",
-					Config: v1alpha1.AppCatalogSpecConfig{
-						Secret: v1alpha1.AppCatalogSpecConfigSecret{
+					Config: &v1alpha1.CatalogSpecConfig{
+						Secret: &v1alpha1.CatalogSpecConfigSecret{
 							Name:      "test-catalog-secrets",
 							Namespace: "giantswarm",
 						},
@@ -268,14 +268,14 @@ func Test_MergeSecretData(t *testing.T) {
 					},
 				},
 			},
-			appCatalog: v1alpha1.AppCatalog{
+			catalog: v1alpha1.Catalog{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "test-catalog",
 				},
-				Spec: v1alpha1.AppCatalogSpec{
+				Spec: v1alpha1.CatalogSpec{
 					Title: "test-catalog",
-					Config: v1alpha1.AppCatalogSpecConfig{
-						Secret: v1alpha1.AppCatalogSpecConfigSecret{
+					Config: &v1alpha1.CatalogSpecConfig{
+						Secret: &v1alpha1.CatalogSpecConfigSecret{
 							Name:      "test-catalog-secrets",
 							Namespace: "giantswarm",
 						},
@@ -338,7 +338,7 @@ func Test_MergeSecretData(t *testing.T) {
 					},
 				},
 			},
-			appCatalog: v1alpha1.AppCatalog{
+			catalog: v1alpha1.Catalog{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "test-catalog",
 				},
@@ -375,7 +375,7 @@ func Test_MergeSecretData(t *testing.T) {
 				t.Fatalf("error == %#v, want nil", err)
 			}
 
-			result, err := v.MergeSecretData(ctx, tc.app, tc.appCatalog)
+			result, err := v.MergeSecretData(ctx, tc.app, tc.catalog)
 			switch {
 			case err != nil && tc.errorMatcher == nil:
 				t.Fatalf("error == %#v, want nil", err)

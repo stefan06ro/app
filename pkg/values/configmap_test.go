@@ -19,7 +19,7 @@ func Test_MergeConfigMapData(t *testing.T) {
 	tests := []struct {
 		name         string
 		app          v1alpha1.App
-		appCatalog   v1alpha1.AppCatalog
+		catalog      v1alpha1.Catalog
 		configMaps   []*corev1.ConfigMap
 		expectedData map[string]interface{}
 		errorMatcher func(error) bool
@@ -37,7 +37,7 @@ func Test_MergeConfigMapData(t *testing.T) {
 					Namespace: "kube-system",
 				},
 			},
-			appCatalog: v1alpha1.AppCatalog{
+			catalog: v1alpha1.Catalog{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "test-catalog",
 				},
@@ -63,7 +63,7 @@ func Test_MergeConfigMapData(t *testing.T) {
 					},
 				},
 			},
-			appCatalog: v1alpha1.AppCatalog{
+			catalog: v1alpha1.Catalog{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "test-catalog",
 				},
@@ -96,14 +96,14 @@ func Test_MergeConfigMapData(t *testing.T) {
 					Namespace: "giantswarm",
 				},
 			},
-			appCatalog: v1alpha1.AppCatalog{
+			catalog: v1alpha1.Catalog{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "test-catalog",
 				},
-				Spec: v1alpha1.AppCatalogSpec{
+				Spec: v1alpha1.CatalogSpec{
 					Title: "test-catalog",
-					Config: v1alpha1.AppCatalogSpecConfig{
-						ConfigMap: v1alpha1.AppCatalogSpecConfigConfigMap{
+					Config: &v1alpha1.CatalogSpecConfig{
+						ConfigMap: &v1alpha1.CatalogSpecConfigConfigMap{
 							Name:      "test-catalog-values",
 							Namespace: "giantswarm",
 						},
@@ -144,14 +144,14 @@ func Test_MergeConfigMapData(t *testing.T) {
 					},
 				},
 			},
-			appCatalog: v1alpha1.AppCatalog{
+			catalog: v1alpha1.Catalog{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "test-catalog",
 				},
-				Spec: v1alpha1.AppCatalogSpec{
+				Spec: v1alpha1.CatalogSpec{
 					Title: "test-catalog",
-					Config: v1alpha1.AppCatalogSpecConfig{
-						ConfigMap: v1alpha1.AppCatalogSpecConfigConfigMap{
+					Config: &v1alpha1.CatalogSpecConfig{
+						ConfigMap: &v1alpha1.CatalogSpecConfigConfigMap{
 							Name:      "test-catalog-values",
 							Namespace: "giantswarm",
 						},
@@ -202,14 +202,14 @@ func Test_MergeConfigMapData(t *testing.T) {
 					},
 				},
 			},
-			appCatalog: v1alpha1.AppCatalog{
+			catalog: v1alpha1.Catalog{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "test-catalog",
 				},
-				Spec: v1alpha1.AppCatalogSpec{
+				Spec: v1alpha1.CatalogSpec{
 					Title: "test-catalog",
-					Config: v1alpha1.AppCatalogSpecConfig{
-						ConfigMap: v1alpha1.AppCatalogSpecConfigConfigMap{
+					Config: &v1alpha1.CatalogSpecConfig{
+						ConfigMap: &v1alpha1.CatalogSpecConfigConfigMap{
 							Name:      "test-catalog-values",
 							Namespace: "giantswarm",
 						},
@@ -265,14 +265,14 @@ func Test_MergeConfigMapData(t *testing.T) {
 					},
 				},
 			},
-			appCatalog: v1alpha1.AppCatalog{
+			catalog: v1alpha1.Catalog{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "test-catalog",
 				},
-				Spec: v1alpha1.AppCatalogSpec{
+				Spec: v1alpha1.CatalogSpec{
 					Title: "test-catalog",
-					Config: v1alpha1.AppCatalogSpecConfig{
-						ConfigMap: v1alpha1.AppCatalogSpecConfigConfigMap{
+					Config: &v1alpha1.CatalogSpecConfig{
+						ConfigMap: &v1alpha1.CatalogSpecConfigConfigMap{
 							Name:      "test-catalog-values",
 							Namespace: "giantswarm",
 						},
@@ -334,14 +334,14 @@ func Test_MergeConfigMapData(t *testing.T) {
 					},
 				},
 			},
-			appCatalog: v1alpha1.AppCatalog{
+			catalog: v1alpha1.Catalog{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "test-catalog",
 				},
-				Spec: v1alpha1.AppCatalogSpec{
+				Spec: v1alpha1.CatalogSpec{
 					Title: "test-catalog",
-					Config: v1alpha1.AppCatalogSpecConfig{
-						ConfigMap: v1alpha1.AppCatalogSpecConfigConfigMap{
+					Config: &v1alpha1.CatalogSpecConfig{
+						ConfigMap: &v1alpha1.CatalogSpecConfigConfigMap{
 							Name:      "test-catalog-values",
 							Namespace: "giantswarm",
 						},
@@ -390,7 +390,7 @@ func Test_MergeConfigMapData(t *testing.T) {
 				t.Fatalf("error == %#v, want nil", err)
 			}
 
-			result, err := v.MergeConfigMapData(ctx, tc.app, tc.appCatalog)
+			result, err := v.MergeConfigMapData(ctx, tc.app, tc.catalog)
 			switch {
 			case err != nil && tc.errorMatcher == nil:
 				t.Fatalf("error == %#v, want nil", err)
