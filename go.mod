@@ -7,9 +7,13 @@ require (
 	github.com/giantswarm/k8smetadata v0.3.0
 	github.com/giantswarm/microerror v0.3.0
 	github.com/giantswarm/micrologger v0.5.0
+	github.com/giantswarm/to v0.3.0
 	github.com/google/go-cmp v0.5.6
+	github.com/google/go-github/v35 v35.0.0
 	github.com/imdario/mergo v0.3.12
+	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
 	k8s.io/api v0.18.19
+	k8s.io/apiextensions-apiserver v0.18.9
 	k8s.io/apimachinery v0.18.19
 	k8s.io/client-go v0.18.19
 	sigs.k8s.io/yaml v1.2.0
