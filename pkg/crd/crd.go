@@ -91,7 +91,7 @@ func (g CRDGetter) LoadCRDs(ctx context.Context) ([]*apiextensionsv1.CustomResou
 	}
 
 	if g.provider != "" {
-		charts = append(charts, fmt.Sprintf("cds-%s", g.provider))
+		charts = append(charts, fmt.Sprintf("crds-%s", g.provider))
 	}
 
 	for _, chart := range charts {

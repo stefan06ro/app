@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fix typo in provider-specific CRD path in apiextensions.
+
 ## [5.0.0] - 2021-06-04
 
 ### Added
