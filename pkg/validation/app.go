@@ -15,9 +15,10 @@ import (
 
 const (
 	catalogNotFoundTemplate         = "catalog %#q not found"
-	labelNotFoundTemplate           = "label %#q not found"
 	nameTooLongTemplate             = "name %#q is %d chars and exceeds max length of %d chars"
 	namespaceNotFoundReasonTemplate = "namespace is not specified for %s %#q"
+	labelInvalidValueTemplate       = "label %#q has invalid value %#q"
+	labelNotFoundTemplate           = "label %#q not found"
 	resourceNotFoundTemplate        = "%s %#q in namespace %#q not found"
 
 	defaultCatalogName = "default"
@@ -204,6 +205,9 @@ func (v *Validator) validateKubeConfig(ctx context.Context, cr v1alpha1.App) err
 func (v *Validator) validateLabels(ctx context.Context, cr v1alpha1.App) error {
 	if key.VersionLabel(cr) == "" {
 		return microerror.Maskf(validationError, labelNotFoundTemplate, label.AppOperatorVersion)
+	}
+	if key.VersionLabel(cr) == key.LegacyAppVersionLabel {
+		return microerror.Maskf(validationError, labelInvalidValueTemplate, label.AppOperatorVersion, key.VersionLabel(cr))
 	}
 
 	return nil

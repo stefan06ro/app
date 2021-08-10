@@ -543,6 +543,31 @@ func Test_ValidateApp(t *testing.T) {
 			},
 			expectedErr: "validation error: name `cluster-autoscaler-1.2.2-2b060b8bda545a7b6aeff1b8cb13951181ae30d3` is 65 chars and exceeds max length of 53 chars",
 		},
+		{
+			name: "case 16: legacy version label is rejected",
+			obj: v1alpha1.App{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "kiam",
+					Namespace: "eggs2",
+					Labels: map[string]string{
+						label.AppOperatorVersion: "1.0.0",
+					},
+				},
+				Spec: v1alpha1.AppSpec{
+					Catalog:   "giantswarm",
+					Name:      "kiam",
+					Namespace: "kube-system",
+					KubeConfig: v1alpha1.AppSpecKubeConfig{
+						InCluster: true,
+					},
+					Version: "1.4.0",
+				},
+			},
+			catalogs: []*v1alpha1.AppCatalog{
+				newTestCatalog("giantswarm"),
+			},
+			expectedErr: "validation error: label `app-operator.giantswarm.io/version` has invalid value `1.0.0`",
+		},
 	}
 
 	for _, tc := range tests {
