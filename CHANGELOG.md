@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.1.0] - 2021-08-10
+
 ## [5.0.1] - 2021-06-15
 
 ### Fixed
@@ -218,7 +220,8 @@ since there can be a delay creating them on cluster creation.
 
 - First release
 
-[Unreleased]: https://github.com/giantswarm/app/compare/v5.0.1...HEAD
+[Unreleased]: https://github.com/giantswarm/app/compare/v5.1.0...HEAD
+[5.1.0]: https://github.com/giantswarm/app/compare/v5.0.1...v5.1.0
 [5.0.1]: https://github.com/giantswarm/app/compare/v5.0.0...v5.0.1
 [5.0.0]: https://github.com/giantswarm/app/compare/v4.13.0...v5.0.0
 [4.13.0]: https://github.com/giantswarm/app/compare/v4.12.0...v4.13.0
