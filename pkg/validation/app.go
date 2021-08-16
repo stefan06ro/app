@@ -75,13 +75,36 @@ func (v *Validator) ValidateApp(ctx context.Context, app v1alpha1.App) (bool, er
 }
 
 func (v *Validator) validateCatalog(ctx context.Context, cr v1alpha1.App) error {
-	if key.CatalogName(cr) != "" {
-		_, err := v.g8sClient.ApplicationV1alpha1().AppCatalogs().Get(ctx, key.CatalogName(cr), metav1.GetOptions{})
+	var err error
+
+	if key.CatalogName(cr) == "" {
+		return nil
+	}
+
+	var namespaces []string
+	{
+		if key.CatalogNamespace(cr) != "" {
+			namespaces = []string{key.CatalogNamespace(cr)}
+		} else {
+			namespaces = []string{metav1.NamespaceDefault, "giantswarm"}
+		}
+	}
+
+	var catalog *v1alpha1.Catalog
+
+	for _, ns := range namespaces {
+		catalog, err = v.g8sClient.ApplicationV1alpha1().Catalogs(ns).Get(ctx, key.CatalogName(cr), metav1.GetOptions{})
 		if apierrors.IsNotFound(err) {
-			return microerror.Maskf(validationError, catalogNotFoundTemplate, key.CatalogName(cr))
+			// no-op
+			continue
 		} else if err != nil {
 			return microerror.Mask(err)
 		}
+		break
+	}
+
+	if catalog == nil {
+		return microerror.Maskf(validationError, catalogNotFoundTemplate, key.CatalogName(cr))
 	}
 
 	return nil

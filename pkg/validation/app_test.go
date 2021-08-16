@@ -21,7 +21,7 @@ func Test_ValidateApp(t *testing.T) {
 	tests := []struct {
 		name        string
 		obj         v1alpha1.App
-		catalogs    []*v1alpha1.AppCatalog
+		catalogs    []*v1alpha1.Catalog
 		configMaps  []*corev1.ConfigMap
 		secrets     []*corev1.Secret
 		expectedErr string
@@ -65,8 +65,8 @@ func Test_ValidateApp(t *testing.T) {
 					Version: "1.4.0",
 				},
 			},
-			catalogs: []*v1alpha1.AppCatalog{
-				newTestCatalog("giantswarm"),
+			catalogs: []*v1alpha1.Catalog{
+				newTestCatalog("giantswarm", "default"),
 			},
 			configMaps: []*corev1.ConfigMap{
 				newTestConfigMap("eggs2-cluster-values", "eggs2"),
@@ -96,8 +96,8 @@ func Test_ValidateApp(t *testing.T) {
 					Version: "1.2.2",
 				},
 			},
-			catalogs: []*v1alpha1.AppCatalog{
-				newTestCatalog("control-plane-catalog"),
+			catalogs: []*v1alpha1.Catalog{
+				newTestCatalog("control-plane-catalog", "giantswarm"),
 			},
 		},
 		{
@@ -117,8 +117,8 @@ func Test_ValidateApp(t *testing.T) {
 					Version: "1.2.2",
 				},
 			},
-			catalogs: []*v1alpha1.AppCatalog{
-				newTestCatalog("control-plane-catalog"),
+			catalogs: []*v1alpha1.Catalog{
+				newTestCatalog("control-plane-catalog", "giantswarm"),
 			},
 			expectedErr: "validation error: label `app-operator.giantswarm.io/version` not found",
 		},
@@ -170,8 +170,8 @@ func Test_ValidateApp(t *testing.T) {
 					Version: "1.2.2",
 				},
 			},
-			catalogs: []*v1alpha1.AppCatalog{
-				newTestCatalog("control-plane-catalog"),
+			catalogs: []*v1alpha1.Catalog{
+				newTestCatalog("control-plane-catalog", "giantswarm"),
 			},
 			expectedErr: "app config map not found error: configmap `dex-app-values` in namespace `giantswarm` not found",
 		},
@@ -201,8 +201,8 @@ func Test_ValidateApp(t *testing.T) {
 					Version: "1.2.2",
 				},
 			},
-			catalogs: []*v1alpha1.AppCatalog{
-				newTestCatalog("control-plane-catalog"),
+			catalogs: []*v1alpha1.Catalog{
+				newTestCatalog("control-plane-catalog", "giantswarm"),
 			},
 			expectedErr: "validation error: namespace is not specified for configmap `dex-app-values`",
 		},
@@ -232,8 +232,8 @@ func Test_ValidateApp(t *testing.T) {
 					Version: "1.2.2",
 				},
 			},
-			catalogs: []*v1alpha1.AppCatalog{
-				newTestCatalog("control-plane-catalog"),
+			catalogs: []*v1alpha1.Catalog{
+				newTestCatalog("control-plane-catalog", "giantswarm"),
 			},
 			expectedErr: "validation error: secret `dex-app-secrets` in namespace `giantswarm` not found",
 		},
@@ -263,8 +263,8 @@ func Test_ValidateApp(t *testing.T) {
 					Version: "1.2.2",
 				},
 			},
-			catalogs: []*v1alpha1.AppCatalog{
-				newTestCatalog("control-plane-catalog"),
+			catalogs: []*v1alpha1.Catalog{
+				newTestCatalog("control-plane-catalog", "giantswarm"),
 			},
 			expectedErr: "validation error: namespace is not specified for secret `dex-app-secrets`",
 		},
@@ -295,8 +295,8 @@ func Test_ValidateApp(t *testing.T) {
 					Version: "1.4.0",
 				},
 			},
-			catalogs: []*v1alpha1.AppCatalog{
-				newTestCatalog("giantswarm"),
+			catalogs: []*v1alpha1.Catalog{
+				newTestCatalog("giantswarm", "default"),
 			},
 			expectedErr: "kube config not found error: kubeconfig secret `eggs2-kubeconfig` in namespace `eggs2` not found",
 		},
@@ -327,8 +327,8 @@ func Test_ValidateApp(t *testing.T) {
 					Version: "1.4.0",
 				},
 			},
-			catalogs: []*v1alpha1.AppCatalog{
-				newTestCatalog("giantswarm"),
+			catalogs: []*v1alpha1.Catalog{
+				newTestCatalog("giantswarm", "default"),
 			},
 			expectedErr: "validation error: namespace is not specified for kubeconfig secret `eggs2-kubeconfig`",
 		},
@@ -358,8 +358,8 @@ func Test_ValidateApp(t *testing.T) {
 					Version: "1.2.2",
 				},
 			},
-			catalogs: []*v1alpha1.AppCatalog{
-				newTestCatalog("control-plane-catalog"),
+			catalogs: []*v1alpha1.Catalog{
+				newTestCatalog("control-plane-catalog", "default"),
 			},
 			expectedErr: "validation error: configmap `dex-app-user-values` in namespace `giantswarm` not found",
 		},
@@ -389,8 +389,8 @@ func Test_ValidateApp(t *testing.T) {
 					Version: "1.2.2",
 				},
 			},
-			catalogs: []*v1alpha1.AppCatalog{
-				newTestCatalog("control-plane-catalog"),
+			catalogs: []*v1alpha1.Catalog{
+				newTestCatalog("control-plane-catalog", "giantswarm"),
 			},
 			expectedErr: "validation error: namespace is not specified for configmap `dex-app-user-values`",
 		},
@@ -420,8 +420,8 @@ func Test_ValidateApp(t *testing.T) {
 					Version: "1.2.2",
 				},
 			},
-			catalogs: []*v1alpha1.AppCatalog{
-				newTestCatalog("control-plane-catalog"),
+			catalogs: []*v1alpha1.Catalog{
+				newTestCatalog("control-plane-catalog", "giantswarm"),
 			},
 			expectedErr: "validation error: secret `dex-app-user-secrets` in namespace `giantswarm` not found",
 		},
@@ -451,8 +451,8 @@ func Test_ValidateApp(t *testing.T) {
 					Version: "1.2.2",
 				},
 			},
-			catalogs: []*v1alpha1.AppCatalog{
-				newTestCatalog("control-plane-catalog"),
+			catalogs: []*v1alpha1.Catalog{
+				newTestCatalog("control-plane-catalog", "giantswarm"),
 			},
 			expectedErr: "validation error: namespace is not specified for secret `dex-app-user-secrets`",
 		},
@@ -482,8 +482,8 @@ func Test_ValidateApp(t *testing.T) {
 					Version: "1.2.2",
 				},
 			},
-			catalogs: []*v1alpha1.AppCatalog{
-				newTestCatalog("default"),
+			catalogs: []*v1alpha1.Catalog{
+				newTestCatalog("default", "giantswarm"),
 			},
 			expectedErr: "validation error: user configmap must be named `kiam-user-values` for app in default catalog",
 		},
@@ -513,8 +513,8 @@ func Test_ValidateApp(t *testing.T) {
 					Version: "1.2.2",
 				},
 			},
-			catalogs: []*v1alpha1.AppCatalog{
-				newTestCatalog("default"),
+			catalogs: []*v1alpha1.Catalog{
+				newTestCatalog("default", "giantswarm"),
 			},
 			expectedErr: "validation error: user secret must be named `kiam-user-secrets` for app in default catalog",
 		},
@@ -538,13 +538,13 @@ func Test_ValidateApp(t *testing.T) {
 					Version: "1.2.2",
 				},
 			},
-			catalogs: []*v1alpha1.AppCatalog{
-				newTestCatalog("default"),
+			catalogs: []*v1alpha1.Catalog{
+				newTestCatalog("default", "giantswarm"),
 			},
 			expectedErr: "validation error: name `cluster-autoscaler-1.2.2-2b060b8bda545a7b6aeff1b8cb13951181ae30d3` is 65 chars and exceeds max length of 53 chars",
 		},
 		{
-			name: "case 16: legacy version label is rejected",
+			name: "case 17: legacy version label is rejected",
 			obj: v1alpha1.App{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "kiam",
@@ -563,8 +563,8 @@ func Test_ValidateApp(t *testing.T) {
 					Version: "1.4.0",
 				},
 			},
-			catalogs: []*v1alpha1.AppCatalog{
-				newTestCatalog("giantswarm"),
+			catalogs: []*v1alpha1.Catalog{
+				newTestCatalog("giantswarm", "default"),
 			},
 			expectedErr: "validation error: label `app-operator.giantswarm.io/version` has invalid value `1.0.0`",
 		},
@@ -1015,12 +1015,13 @@ func Test_ValidateNamespace(t *testing.T) {
 	}
 }
 
-func newTestCatalog(name string) *v1alpha1.AppCatalog {
-	return &v1alpha1.AppCatalog{
+func newTestCatalog(name, namespace string) *v1alpha1.Catalog {
+	return &v1alpha1.Catalog{
 		ObjectMeta: metav1.ObjectMeta{
-			Name: name,
+			Name:      name,
+			Namespace: namespace,
 		},
-		Spec: v1alpha1.AppCatalogSpec{
+		Spec: v1alpha1.CatalogSpec{
 			Description: name,
 			Title:       name,
 		},

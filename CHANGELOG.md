@@ -7,7 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Validate `Catalog` CRs instead of `AppCatalog` in App validation.
+
 ## [5.1.0] - 2021-08-10
+
+- Reject app version label with legacy 1.0.0 value.
 
 ## [5.0.1] - 2021-06-15
 

@@ -77,6 +77,10 @@ func CatalogName(customResource v1alpha1.App) string {
 	return customResource.Spec.Catalog
 }
 
+func CatalogNamespace(customResource v1alpha1.App) string {
+	return customResource.Spec.CatalogNamespace
+}
+
 func ClusterID(customResource v1alpha1.App) string {
 	return customResource.GetLabels()[label.Cluster]
 }
