@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.2.1] - 2021-08-17
+
 ### Fixed
 
 - Check for nil or empty `.metadata.Name`  when validating `.spec.catalog`.
@@ -232,7 +234,8 @@ since there can be a delay creating them on cluster creation.
 
 - First release
 
-[Unreleased]: https://github.com/giantswarm/app/compare/v5.2.0...HEAD
+[Unreleased]: https://github.com/giantswarm/app/compare/v5.2.1...HEAD
+[5.2.1]: https://github.com/giantswarm/app/compare/v5.2.0...v5.2.1
 [5.2.0]: https://github.com/giantswarm/app/compare/v5.1.0...v5.2.0
 [5.1.0]: https://github.com/giantswarm/app/compare/v5.0.1...v5.1.0
 [5.0.1]: https://github.com/giantswarm/app/compare/v5.0.0...v5.0.1
