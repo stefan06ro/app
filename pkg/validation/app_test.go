@@ -133,7 +133,7 @@ func Test_ValidateApp(t *testing.T) {
 					},
 				},
 				Spec: v1alpha1.AppSpec{
-					Catalog:   "control-plane-catalog",
+					Catalog:   "missing",
 					Name:      "dex-app",
 					Namespace: "giantswarm",
 					KubeConfig: v1alpha1.AppSpecKubeConfig{
@@ -142,7 +142,10 @@ func Test_ValidateApp(t *testing.T) {
 					Version: "1.2.2",
 				},
 			},
-			expectedErr: "validation error: catalog `control-plane-catalog` not found",
+			catalogs: []*v1alpha1.Catalog{
+				newTestCatalog("control-plane-catalog", "giantswarm"),
+			},
+			expectedErr: "validation error: catalog `missing` not found",
 		},
 		{
 			name: "case 4: spec.config.configMap not found",
