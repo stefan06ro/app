@@ -21,7 +21,8 @@ const (
 	labelNotFoundTemplate           = "label %#q not found"
 	resourceNotFoundTemplate        = "%s %#q in namespace %#q not found"
 
-	defaultCatalogName = "default"
+	defaultCatalogName            = "default"
+	nginxIngressControllerAppName = "nginx-ingress-controller-app"
 
 	// nameMaxLength is 53 characters as this is the maximum allowed for Helm
 	// release names.
@@ -299,7 +300,10 @@ func (v *Validator) validateMetadataConstraints(ctx context.Context, cr v1alpha1
 
 func (v *Validator) validateUserConfig(ctx context.Context, cr v1alpha1.App) error {
 	if key.UserConfigMapName(cr) != "" {
-		if key.CatalogName(cr) == defaultCatalogName {
+		// NGINX Ingress Controller is no longer a pre-installed app
+		// managed by cluster-operator. So we don't need to restrict
+		// the name.
+		if key.CatalogName(cr) == defaultCatalogName && key.AppName(cr) != nginxIngressControllerAppName {
 			configMapName := fmt.Sprintf("%s-user-values", cr.Name)
 			if key.UserConfigMapName(cr) != configMapName {
 				return microerror.Maskf(validationError, "user configmap must be named %#q for app in default catalog", configMapName)
