@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.2.3] - 2021-08-26
+
 ### Fixed
 
 - Fix app-admission-controller webhook name in validation error matchers.
@@ -244,7 +246,8 @@ since there can be a delay creating them on cluster creation.
 
 - First release
 
-[Unreleased]: https://github.com/giantswarm/app/compare/v5.2.2...HEAD
+[Unreleased]: https://github.com/giantswarm/app/compare/v5.2.3...HEAD
+[5.2.3]: https://github.com/giantswarm/app/compare/v5.2.2...v5.2.3
 [5.2.2]: https://github.com/giantswarm/app/compare/v5.2.1...v5.2.2
 [5.2.1]: https://github.com/giantswarm/app/compare/v5.2.0...v5.2.1
 [5.2.0]: https://github.com/giantswarm/app/compare/v5.1.0...v5.2.0
