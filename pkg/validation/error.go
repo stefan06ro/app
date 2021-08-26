@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	appAdmissionControllerText string = "admission webhook \"apps.app-admission-controller-unique.giantswarm.io\" denied the request:"
+	appAdmissionControllerText string = "admission webhook \"apps.app-admission-controller.giantswarm.io\" denied the request:"
 )
 
 var (
