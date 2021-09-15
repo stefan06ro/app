@@ -21,6 +21,7 @@ type Config struct {
 	ConfigVersion       string
 	DisableForceUpgrade bool
 	Name                string
+	Namespace           string
 	UserConfigMapName   string
 	UserSecretName      string
 }
@@ -29,6 +30,10 @@ type Config struct {
 //
 // AppCatalog is the name of the app catalog where the app stored.
 func NewCR(c Config) *applicationv1alpha1.App {
+	if c.Namespace == "" {
+		c.Namespace = "giantswarm"
+	}
+
 	annotations := map[string]string{}
 	{
 		if c.ConfigVersion != "" {
@@ -43,13 +48,13 @@ func NewCR(c Config) *applicationv1alpha1.App {
 	if c.UserConfigMapName != "" {
 		userConfig.ConfigMap = applicationv1alpha1.AppSpecUserConfigConfigMap{
 			Name:      c.UserConfigMapName,
-			Namespace: "giantswarm",
+			Namespace: c.Namespace,
 		}
 	}
 	if c.UserSecretName != "" {
 		userConfig.Secret = applicationv1alpha1.AppSpecUserConfigSecret{
 			Name:      c.UserSecretName,
-			Namespace: "giantswarm",
+			Namespace: c.Namespace,
 		}
 	}
 
@@ -57,7 +62,7 @@ func NewCR(c Config) *applicationv1alpha1.App {
 		TypeMeta: applicationv1alpha1.NewAppTypeMeta(),
 		ObjectMeta: metav1.ObjectMeta{
 			Name:        c.Name,
-			Namespace:   "giantswarm",
+			Namespace:   c.Namespace,
 			Annotations: annotations,
 			Labels: map[string]string{
 				// Version 0.0.0 means this is reconciled by

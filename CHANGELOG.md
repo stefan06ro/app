@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Make app CR namespace configurable.
+
 ## [5.2.3] - 2021-08-26
 
 ### Fixed
