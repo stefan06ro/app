@@ -13,7 +13,7 @@ import (
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/giantswarm/to"
-	"github.com/google/go-github/v35/github"
+	"github.com/google/go-github/v39/github"
 	"golang.org/x/oauth2"
 	"k8s.io/apiextensions-apiserver/pkg/apis/apiextensions"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
